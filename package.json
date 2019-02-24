@@ -1,0 +1,16 @@
+{
+  "name": "uteaapp",
+  "version": "0.1.0",
+  "description": "Un'applicazione a supporto delle attività svolte da UTEA",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "arol-varesi",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^4.0.5",
+    "electron-reload": "^1.4.0",
+    "eslint": "^5.14.1"
+  }
+}
