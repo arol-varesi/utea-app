@@ -1,9 +1,10 @@
-'use strict'
+'use strict';
 
-const electron = require ('electron')
-const { app, BrowserWindow } = electron
+const electron = require ('electron');
+const { app, BrowserWindow } = electron;
 
-require('electron-reload')(__dirname)
+// eslint-disable-next-line no-undef
+require('electron-reload')(__dirname);
 
 // When the 'electron' app is ready
 app.on('ready', () => {
@@ -13,14 +14,15 @@ app.on('ready', () => {
     height: 600,
     minWidth: 500,
     minHeight: 200,
-  })
+  });
 
   ' on closing thi mainWindows, relese the memory'
   mainWindow.on('closed', () => {
     mainWindow = null
-  })
+  });
 
   ' open the content of the main window'
-  mainWindow.loadURL("file://" + __dirname + "/app/index.html")
-})
+  // eslint-disable-next-line no-undef
+  mainWindow.loadURL("file://" + __dirname + "/app/index.html");
+});
 

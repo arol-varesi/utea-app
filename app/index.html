@@ -1,35 +1,38 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="utf-8">
   <title>UTEA App</title>
 
   <!-- Stylesheets -->
   <link rel="stylesheet" href="css/photon.min.css">
 
   <!-- Javascript -->
-  <script></script>
 
 </head>
   <body>
     <div class="window">
       <header class="toolbar toolbar-header">
-        <h1 class="title">Header</h1>
+        <h1 class="title" id="header">Header</h1>
       </header>
       <div class="window-content">  
         <div class="pane-group">
           <div class="pane-sm sidebar">
-            <p>Sidebar</p>
-            <ul>
-              <li>fsdhkjhksd</li>
-              <li>fsdhkjhksd</li>
-              <li>fsdhkjhksd</li>
-              <li>fsdhkjhksd</li>
-              <li>fsdhkjhksd</li>
+            <ul id="side-menu">
+             
             </ul>
-
           </div>
           <div class="pane">
-            <p>Main</p>
+            <table class="table-striped">
+              <thead>
+                <th>Name</th>
+                <th>Type</th>
+                <th>File Size</th>
+              </thead>
+              <tbody id="table-content">
+
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
@@ -37,5 +40,8 @@
         <h1 class="title">Footer</h1>
       </footer>      
      </div>
+
+
+     <script src="js/index.js"></script>
   </body>
 </html>
