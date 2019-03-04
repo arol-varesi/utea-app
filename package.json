@@ -2,7 +2,11 @@
   "name": "uteaapp",
   "version": "0.1.0",
   "description": "Un'applicazione a supporto delle attività svolte da UTEA",
-  "main": "main.js",
+  "main": "main",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/arol-varesi/utea-app"
+  },
   "scripts": {
     "start": "electron ."
   },
@@ -12,5 +16,8 @@
     "electron": "^4.0.5",
     "electron-reload": "^1.4.0",
     "eslint": "^5.14.1"
+  },
+  "dependencies": {
+    "csv-parser": "^2.1.0"
   }
 }

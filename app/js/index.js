@@ -1,8 +1,11 @@
-
 let Console = console; // eslint no-console: "error"
 
 const fs = require('fs');
 const path = require('path');
+
+// const manageCsv = require('electron').remote.require('./manageCsv.js')
+// const manageCsv = require("./manageCsv.js");
+const csvView = require('electron').remote.require('./index').csvView;
 
 // eslint-disable-next-line no-undef
 let dir = __dirname;  // starting directory
@@ -43,7 +46,7 @@ function addFilesToPage(files, dir) {
     node = document.createTextNode("..");
     td.appendChild(node);
     tr.style.color = "red"
-    tr.setAttribute("onclick", 'chDir("'+path.dirname(dir)+'")');
+    tr.setAttribute("ondblclick", 'chDir("'+path.dirname(dir)+'")');
     tr.appendChild(td);
     table.appendChild(tr);  
   }
@@ -64,11 +67,16 @@ function addFilesToPage(files, dir) {
       // add Type
       td = document.createElement('td');
       if(file.isFile()) {
-        node = document.createTextNode(path.extname(file.name));
+        let extension = path.extname(file.name)
+        node = document.createTextNode(extension);
+        if (extension.toLowerCase() === ".csv") {
+          tr.style.color = "green"
+          tr.setAttribute("ondblclick", 'csvView("' + p + '")');
+        }
       } else if(file.isDirectory()) {
         node = document.createTextNode("DIR");
         tr.style.color = "red"
-        tr.setAttribute("onclick", 'chDir("'+ p + '")');
+        tr.setAttribute("ondblclick", 'chDir("'+ p + '")');
       } else {
         node = document.createTextNode("?");
       }
@@ -83,6 +91,3 @@ function addFilesToPage(files, dir) {
     })
   })
 }
-
-
-
