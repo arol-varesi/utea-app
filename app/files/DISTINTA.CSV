@@ -1,4 +1,4 @@
-Sigla;Codice catalogo;Codice interno;Costruttore;Descrizione;Qta;Ubicazione;Quadro;Gr. Funzione;Prezzo;Sconto;Dimensioni;Foglio;Note;Note Tecniche
+Sigla;Codice catalogo;Codice interno;Costruttore;Descrizione;Qta;Ubicazione;Quadro;Gr_Funzione;Prezzo;Sconto;Dimensioni;Foglio;Note;Note Tecniche
 MCB;SCH_EL;HCABL0000000;AROL;SCHEMA ELETTRICO;1;;DHH0100;;;0.00;;57;R;
 GS2;6EP1 436-3BA00;HHALIM_GS024;SIEMENS;ALIMENTATORE 3F SWITCHING 400-500V AC/24V DC 20A;1;;DHH0090;;;0.00;;12;R;
 XT10;APD2525;HHBOX0_BX032;IRINOX;SCATOLA INOX 250X250X130;1;;DHH0101;;;0.00;;110;R;

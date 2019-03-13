@@ -5,22 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>CVS Viewer</title>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" type="text/css"  href="../node_modules/datatables.net-dt/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" type="text/css"  href="../node_modules/datatables.net-colreorder-dt/css/colReorder.dataTables.min.css">
+
+  
+  <!-- Javascript -->
+
 </head>
 <body>
-  <h1>Parametro passato</h1>
-  <p id="param"></p>
-  <script>
-    const { ipcRenderer } = require('electron');
-    var csvContent = ipcRenderer.sendSync('csv-file-get', "test");
+  <h1 id='fileName'></h1>
+  <div class="window">
+    <div class="window-contents">
+      <table id="example" class="compact stripe nowrap hover" style="width:100%">
+        <thead id="tHead">
+        </thead>
+        <tbody id="tBody"></tbody>
+        <tfoot></tfoot>
 
-    console.log(csvContent);
+      </table>     
+    </div>
+  </div>
 
-    document.getElementById('param').innerHTML = csvContent;
-
-
-    // ipcRenderer.on('csv-file-name', (event,arg) => {
-    //   document.getElementById('param').innerHTML = arg;
-    // })
-  </script>
+  <script src="./csvView.js"></script>
 </body>
 </html>

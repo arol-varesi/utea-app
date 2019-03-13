@@ -1,29 +1,27 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <title>UTEA App</title>
+<html lang="it">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  <!-- Stylesheets -->
-  <link rel="stylesheet" href="css/photon.min.css">
- 
-  <!-- Javascript -->
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
 
-</head>
+    <title>UTEA App</title>
+  </head>
   <body>
-    <div class="window">
-      <header class="toolbar toolbar-header">
+    <nav class="navbar navbar-light bg-light">
+      <span class="navbar-brand mb-o h1">Navbar</span>
+    </nav>
+
+    <header class="toolbar toolbar-header">
         <h1 class="title" id="header">Header</h1>
       </header>
       <div class="window-content">  
         <div class="pane-group">
-          <div class="pane-sm sidebar">
-            <ul id="side-menu">
-             
-            </ul>
-          </div>
           <div class="pane">
-            <table class="table-striped">
+            <table class="table table-sm table-striped">
               <thead>
                 <th>Name</th>
                 <th>Type</th>
@@ -39,9 +37,13 @@
       <footer class="toolbar toolbar-footer">
         <h1 class="title">Footer</h1>
       </footer>      
-     </div>
 
+    <!-- Bootstrap Javascript -->    
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
 
-     <script src="js/index.js"></script>
+    <!-- Application JavaScript -->
+    <script src="./index.js"></script>
+
   </body>
 </html>

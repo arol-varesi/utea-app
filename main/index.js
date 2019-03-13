@@ -3,9 +3,9 @@
 const electron = require ('electron');
 const { app, BrowserWindow, ipcMain } = electron;
 const path = require('path');
-const fs = require('fs');
-const parse = require('csv-parser');
-
+// const fs = require('fs');
+// const parse = require('csv-parser');
+const { readCsvFile } = require ('./manageCsv.js');
 
 const __appdirname = path.normalize(path.join(__dirname,"../app"));
 
@@ -52,30 +52,11 @@ exports.csvView = (filename) => {
  
   ipcMain.on('csv-file-get', async (event,arg) => {
     // la funzione aspetta che venga completamente letta il file CSV 
-    event.returnValue = JSON.stringify(await readCsvFile(filename));
+    event.returnValue = await readCsvFile(filename);
   })
   
   ' open the content of the main window'
   mainWindow.loadURL(`file://${__appdirname}/csvView.html?filename=${filename}`);
 
-
 }
 
-
-// la funzione ritorna un "promise" 
-function readCsvFile(inputFile) {
-  let headers = [];
-  let results = [];
-  let promise = new Promise(resolve => {
-    fs.createReadStream(inputFile)
-    .pipe(parse({ separator: ';'}))
-    .on('headers', (h) => headers = h)
-    .on('data', (data) => results.push(data))
-    .on('end', () => {
-      resolve([headers, results]);
-    })
-  }, reject => {})
-
-  // wait for the promise to resolve
-  return promise;
-}
