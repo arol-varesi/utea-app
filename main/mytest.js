@@ -2,27 +2,32 @@
 
 const electron = require ('electron');
 const { app, BrowserWindow, ipcMain } = electron;
+var url = require('url');
 const path = require('path');
 
-const __appdirname = path.normalize(path.join(__dirname,"../app"));
+const __appdirname = path.normalize(path.join(__dirname,"../src"));
 
 
 
 // When the 'electron' app is ready
 app.on('ready', () => {
-  ' create the mainWindow of the application'
-  let mainWindow = new BrowserWindow({ 
-    width: 800, 
-    height: 600,
-    minWidth: 500,
-    minHeight: 200,
+  // create the mainWindow of the application
+  let mainWindow = new BrowserWindow({
+    width: 1000
   });
-  ' on closing thi mainWindows, relese the memory'
+  // on closing thi mainWindows, relese the memory
   mainWindow.on('closed', () => {
     mainWindow = null
   });
 
-  ' open the content of the main window'
-  // eslint-disable-next-line no-undef
-  mainWindow.loadURL(`file://${__appdirname}/testSqlite.html`);
+  // open the content of the main window'
+  //mainWindow.loadURL(`file://${__appdirname}/index.html`);
+  mainWindow.loadURL(url.format({
+    pathname: __appdirname + "/orm.html",
+    protocol: "file:",
+    slashes: true
+  }));
+  mainWindow.toggleDevTools();
 });
+
+
