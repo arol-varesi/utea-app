@@ -10,24 +10,31 @@
    "scripts": {
       "start": "electron .",
       "orm": "electron main/mytest.js",
+      "vue": "electron main/vuetest.js",
       "test": "electron src/index.js",
-      "postinstall": "install-app-deps"
+      "rebuild": "electron-rebuild -f -w sqlite3"
    },
    "author": "arol-varesi",
    "license": "MIT",
    "devDependencies": {
       "electron-builder": "^20.8.1",
-      "eslint": "^5.15.1"
+      "electron-rebuild": "^1.8.4",
+      "eslint": "^5.15.2",
+      "vue-devtools": "^5.0.0-beta.1"
    },
    "dependencies": {
       "@types/node": "^11.11.3",
+      "bootstrap": "^4.3.1",
       "csv-parser": "^2.2.0",
       "datatables.net": "^1.10.19",
       "datatables.net-colreorder-dt": "^1.5.1",
       "datatables.net-dt": "^1.10.19",
       "electron": "^4.1.0",
+      "jquery": "^3.3.1",
+      "popper.js": "^1.14.7",
       "reflect-metadata": "^0.1.10",
       "sqlite3": "^4.0.6",
-      "typeorm": "0.2.15"
+      "typeorm": "^0.2.15",
+      "vue": "^2.6.9"
    }
 }

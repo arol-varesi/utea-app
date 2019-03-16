@@ -1,3 +1,4 @@
+const sqlite = require('sqlite3')
 const typeorm = require('typeorm');
 const { createConnection, getRepository } = typeorm;
 

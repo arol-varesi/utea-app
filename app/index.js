@@ -10,43 +10,19 @@ const csvView = require('electron').remote.require('./index').csvView;
 // eslint-disable-next-line no-undef
 let dir = __dirname;  // starting directory
 
-readDir(dir);
-
-// eslint-disable-next-line no-unused-vars
-function chDir(dir) {
-  // clean the table
-  let table = document.getElementById("table-content");  
-  while (table.lastChild) {
-    table.removeChild(table.lastChild);
-  }
-  readDir(dir);
-}
-
-function readDir(dir){
-  fs.readdir(dir, { withFileTypes: true }, (err, dirent) => {
-    // using option "withFileTypes" readdir returns a fs.Dirent object
-    if (err) {
-      Console.log('fs.readir: Errore di lettura directory: ' + dir);
-      return;
-    }
-    addFilesToPage(dirent, dir);
-    document.getElementById('header').innerHTML = dir;
-  });  
-}
-
 function addFilesToPage(files, dir) {
   // files is an array of fs.Dirent objects
   let table = document.getElementById("table-content"); 
   let tr, td, node;
 
   // Add .. (previous dir)
-  if (dir != "/" ){
+  if (dir != path.parse(dir).root ){
     tr = document.createElement('tr');
     td = document.createElement('td');
     node = document.createTextNode("..");
     td.appendChild(node);
     tr.style.color = "red"
-    tr.setAttribute("ondblclick", 'chDir("'+path.dirname(dir)+'")');
+    tr.addEventListener("dblclick", () => chDir(path.dirname(dir)));
     tr.appendChild(td);
     table.appendChild(tr);  
   }
@@ -71,12 +47,12 @@ function addFilesToPage(files, dir) {
         node = document.createTextNode(extension);
         if (extension.toLowerCase() === ".csv") {
           tr.style.color = "green"
-          tr.setAttribute("ondblclick", 'csvView("' + p + '")');
+          tr.addEventListener("dblclick", () => csvView(p));
         }
       } else if(file.isDirectory()) {
         node = document.createTextNode("DIR");
         tr.style.color = "red"
-        tr.setAttribute("ondblclick", 'chDir("'+ p + '")');
+        tr.addEventListener("dblclick", () => chDir(p));
       } else {
         node = document.createTextNode("?");
       }
@@ -91,3 +67,30 @@ function addFilesToPage(files, dir) {
     })
   })
 }
+
+
+function readDir(dir){
+  fs.readdir(dir, { withFileTypes: true }, (err, dirent) => {
+    // using option "withFileTypes" readdir returns a fs.Dirent object
+    if (err) {
+      Console.log('fs.readir: Errore di lettura directory: ' + dir);
+      return;
+    }
+    addFilesToPage(dirent, dir);
+    document.getElementById('header').innerHTML = dir;
+  });  
+}
+
+// eslint-disable-next-line no-unused-vars
+function chDir(dir) {
+  // clean the table
+  let table = document.getElementById("table-content");  
+  while (table.lastChild) {
+    table.removeChild(table.lastChild);
+  }
+  readDir(dir);
+}
+
+readDir(dir);
+
+

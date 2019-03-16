@@ -6,41 +6,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
 
     <title>UTEA App</title>
   </head>
   <body>
     <nav class="navbar navbar-light bg-light">
       <span class="navbar-brand mb-o h1">Navbar</span>
+      <span class="title" id="header"></span>
     </nav>
 
-    <header class="toolbar toolbar-header">
-        <h1 class="title" id="header">Header</h1>
-      </header>
-      <div class="window-content">  
-        <div class="pane-group">
-          <div class="pane">
-            <table class="table table-sm table-striped">
-              <thead>
-                <th>Name</th>
-                <th>Type</th>
-                <th>File Size</th>
-              </thead>
-              <tbody id="table-content">
+    <div class="window-content">  
+      <div class="pane-group">
+        <div class="pane">
+          <table class="table table-sm table-striped">
+            <thead>
+              <th>Name</th>
+              <th>Type</th>
+              <th>File Size</th>
+            </thead>
+            <tbody id="table-content">
 
-              </tbody>
-            </table>
-          </div>
+            </tbody>
+          </table>
         </div>
       </div>
-      <footer class="toolbar toolbar-footer">
-        <h1 class="title">Footer</h1>
-      </footer>      
+    </div>
 
     <!-- Bootstrap Javascript -->    
-    <script src="js/jquery-3.3.1.min.js"></script>
-    <script src="js/bootstrap.bundle.min.js"></script>
+    <!-- <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="../node_modules/jquery/dist/jquery.slim.min.js"></script>
+    <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script> -->
+
+    <script>
+      window.$ = window.jQuery = require('jquery');
+      window.Bootstrap = require('bootstrap');
+    </script>
 
     <!-- Application JavaScript -->
     <script src="./index.js"></script>

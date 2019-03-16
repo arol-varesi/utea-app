@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Testing Veu.js technology</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+
+
+</head>
+<body>
+
+  <nav class="navbar navbar-dark bg-dark">
+    <span class="navbar-brand">Vue.js Testing</span>
+
+  </nav>
+
+  <div class="container-fluid">
+    <div id="app">
+      <div class="row">
+          <div class="col-sm-4 product-image">
+              <img :src="image" />
+          </div>
+          <div class="col-8">
+            <div class="product-info">
+              <h1>{{ product }}</h1>
+              <p v-if="inventory > 10">Disponibile</p>
+              <p v-else-if="inventory > 0">In Esaurimento</p>
+              <p v-else>Non disponibile</p>
+
+              <ul>
+                <li v-for="detail in details" >{{ detail }}</li>
+              </ul>
+
+              <div v-for="variant in variants" :key="variant.variantId">
+                <p>{{ variant.variantColor }}</p>
+              </div>
+
+              <button type="button" class="btn btn-primary" v-on:click="addToCart">Aggiungi al Carrello</button>
+              <div class="cart">
+                <p>Carrello({{cart}})</p>
+              </div>
+
+            </div>    
+          </div>
+      </div>
+      
+    </div>
+      
+
+  </div>
+
+  
+  <script src="../node_modules/vue/dist/vue.js"></script>
+  <script src="vue.js"></script>
+</body>
+</html>
