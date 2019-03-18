@@ -3,9 +3,7 @@ let Console = console; // eslint no-console: "error"
 const fs = require('fs');
 const path = require('path');
 
-// const manageCsv = require('electron').remote.require('./manageCsv.js')
-// const manageCsv = require("./manageCsv.js");
-const csvView = require('electron').remote.require('./index').csvView;
+const csvView = require('electron').remote.require('./csvMain').csvView;
 
 // eslint-disable-next-line no-undef
 let dir = __dirname;  // starting directory

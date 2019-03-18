@@ -9,9 +9,9 @@
    },
    "scripts": {
       "start": "electron .",
-      "orm": "electron main/mytest.js",
-      "vue": "electron main/vuetest.js",
-      "test": "electron src/index.js",
+      "csv": "electron try/csv/csvMain.js",
+      "orm": "electron try/orm/ormMain.js",
+      "vue": "electron try/vue/vueMain.js",
       "rebuild": "electron-rebuild -f -w sqlite3"
    },
    "author": "arol-varesi",

@@ -4,17 +4,17 @@
    "synchronize": true,
    "logging": false,
    "entities": [
-      "src/entity/**/*.js"
+      "try/orm/entity/**/*.js"
    ],
    "migrations": [
-      "src/migration/**/*.js"
+      "try/orm/migration/**/*.js"
    ],
    "subscribers": [
-      "src/subscriber/**/*.js"
+      "try/orm/subscriber/**/*.js"
    ],
    "cli": {
-      "entitiesDir": "src/entity",
-      "migrationsDir": "src/migration",
-      "subscribersDir": "src/subscriber"
+      "entitiesDir": "try/orm/entity",
+      "migrationsDir": "try/orm/migration",
+      "subscribersDir": "try/orm/subscriber"
    }
 }

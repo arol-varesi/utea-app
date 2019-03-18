@@ -5,9 +5,7 @@ const { app, BrowserWindow, ipcMain } = electron;
 var url = require('url');
 const path = require('path');
 
-const __appdirname = path.normalize(path.join(__dirname,"../src"));
-
-
+const __appdirname = path.normalize(path.join(__dirname,""));
 
 // When the 'electron' app is ready
 app.on('ready', () => {
@@ -19,15 +17,19 @@ app.on('ready', () => {
   mainWindow.on('closed', () => {
     mainWindow = null
   });
+  // activate Vue-devTools
+  if (process.env.NODE_ENV !== 'production'){
+    require('vue-devtools').install()
+    mainWindow.toggleDevTools();
+  }
 
-  // open the content of the main window'
-  //mainWindow.loadURL(`file://${__appdirname}/index.html`);
   mainWindow.loadURL(url.format({
-    pathname: __appdirname + "/orm.html",
+    pathname: __appdirname + "/vue.html",
     protocol: "file:",
     slashes: true
   }));
-  mainWindow.toggleDevTools();
+
+
 });
 
 
