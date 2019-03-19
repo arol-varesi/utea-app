@@ -1,6 +1,6 @@
 {
    "type": "sqlite",
-   "database": "database.sqlite",
+   "database": "try_orm.sqlite",
    "synchronize": true,
    "logging": false,
    "entities": [

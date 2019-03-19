@@ -5,13 +5,36 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Electron App with TypeOrm (SQLite)</title>
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
 </head>
 <body>
-  <h1>Matricole:</h1>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="h2">Matricole</div>
+    </div>
+    <div class="row">
+      <table class="table table-sm">
+        <thead class="thead-dark">
+          <th scope="col">#</th>
+          <th scope="col">Matricola</th>
+          <th scope="col">Tipo</th>
+          <th scope="col">Cliente</th>
+          <th scope="col">Riferimento</th>
+        </thead>
+        <tbody id="matricoleList">  
+          
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+  
+  <button onclick="addCommessa()" type="button" class="btn btn-sm btn-success">Aggiungi una nuova Matricola.</button>
 
-  <ul id="matricoleList"></ul>
-
-  <small>Aggiorna la pagina ed una nuova Matricola viene creata.</small>
+  <script>
+      window.$ = window.jQuery = require('jquery');
+      window.Bootstrap = require('bootstrap');
+  </script>
 
   <script src="./orm.js"></script>
 
