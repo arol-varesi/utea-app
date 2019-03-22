@@ -13,7 +13,7 @@
       "orm": "electron try/orm/ormMain.js",
       "vue": "electron try/vue/vueMain.js",
       "rebuild": "electron-rebuild -f -w sqlite3"
-   },
+    },
    "author": "arol-varesi",
    "license": "MIT",
    "devDependencies": {
