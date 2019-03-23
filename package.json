@@ -2,28 +2,28 @@
    "name": "uteaapp",
    "version": "0.1.0",
    "description": "Un'applicazione a supporto delle attività svolte da UTEA",
-   "main": "main",
+   "license": "MIT",
+   "readmeFilename": "README.md",
+   "author": {
+      "name": "Alessandro Varesi",
+      "email": "a.varesi@arol.it"
+   },
    "repository": {
       "type": "git",
       "url": "https://github.com/arol-varesi/utea-app"
    },
-   "scripts": {
-      "start": "electron .",
-      "csv": "electron try/csv/csvMain.js",
-      "orm": "electron try/orm/ormMain.js",
-      "vue": "electron try/vue/vueMain.js",
-      "rebuild": "electron-rebuild -f -w sqlite3"
-    },
-   "author": "arol-varesi",
-   "license": "MIT",
-   "devDependencies": {
-      "electron-builder": "^20.8.1",
-      "electron-rebuild": "^1.8.4",
-      "eslint": "^5.15.2",
-      "vue-devtools": "^5.0.0-beta.1"
+   "bugs": {
+      "url": "https://github.com/arol-varesi/utea-app/issues"
    },
+   "tags": [
+      "electron",
+      "nodejs",
+      "typescript",
+      "typescript-orm",
+      "orm"
+   ],
    "dependencies": {
-      "@types/node": "^11.11.3",
+      "@types/node": "^11.11.6",
       "bootstrap": "^4.3.1",
       "csv-parser": "^2.2.0",
       "datatables.net": "^1.10.19",
@@ -32,9 +32,23 @@
       "electron": "^4.1.0",
       "jquery": "^3.3.1",
       "popper.js": "^1.14.7",
-      "reflect-metadata": "^0.1.10",
       "sqlite3": "^4.0.6",
       "typeorm": "^0.2.15",
       "vue": "^2.6.9"
+   },
+   "devDependencies": {
+      "electron-builder": "^20.8.1",
+      "electron-rebuild": "^1.8.4",
+      "eslint": "^5.15.2",
+      "typescript": "^3.3.4000",
+      "vue-devtools": "^5.0.0-beta.1"
+   },
+   "scripts": {
+      "start": "tsc && electron main/index.js",
+      "postinstall": "install-app-deps",
+      "csv": "electron try/csv/csvMain.js",
+      "orm": "electron try/orm/ormMain.js",
+      "vue": "electron try/vue/vueMain.js",
+      "rebuild": "electron-rebuild -f -w sqlite3"
    }
 }

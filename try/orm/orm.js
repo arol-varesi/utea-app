@@ -1,21 +1,12 @@
-const sqlite = require('sqlite3')
+// const sqlite = require('sqlite3')
 const typeorm = require('typeorm');
-const { createConnection, getRepository } = typeorm;
+const { createConnection, getConnection, getRepository } = typeorm;
 
 
 
-createConnection().then(() => {
-  // var commessa = {
-  //   matricola:   "12345",
-  //   tipo:        "TSI",
-  //   cliente:     "Nestlè",
-  //   riferimento: "Waterfall"
-  // }
-  // return getRepository("Commessa").save(commessa);
-
-}).then(() => {
+createConnection("try_orm").then(connection => {
   console.log("Salvata correttamente!");
-  return getRepository("Commessa").find();
+  return connection.getRepository("Commessa").find();
 
 }).then(commesse => {
   console.log("Commesse :", commesse);
@@ -53,7 +44,8 @@ createConnection().then(() => {
 });
 
 async function removeCommessa(id) {
-  let rep = getRepository("Commessa");
+  let con = getConnection("try_orm");
+  let rep = con.getRepository("Commessa");
   let toremove = await rep.findOne(id);
   await rep.remove(toremove);
   location.reload();
@@ -66,6 +58,7 @@ async function addCommessa() {
     cliente:     "Nestlè",
     riferimento: "Waterfall"
   }
-  await getRepository("Commessa").save(commessa);
+  let con = getConnection("try_orm");
+  await con.getRepository("Commessa").save(commessa);
   location.reload();
 }

@@ -1,20 +1,46 @@
-{
-   "type": "sqlite",
-   "database": "try_orm.sqlite",
-   "synchronize": true,
-   "logging": false,
-   "entities": [
-      "try/orm/entity/**/*.js"
-   ],
-   "migrations": [
-      "try/orm/migration/**/*.js"
-   ],
-   "subscribers": [
-      "try/orm/subscriber/**/*.js"
-   ],
-   "cli": {
-      "entitiesDir": "try/orm/entity",
-      "migrationsDir": "try/orm/migration",
-      "subscribersDir": "try/orm/subscriber"
+[
+   {
+      "name": "default",
+      "type": "sqlite",
+      "database": "database.sqlite",
+      "synchronize": true,
+      "logging": false,
+      "logger": "simple-console",
+      "entities": [
+         "models/entity/**/*.js"
+      ],
+      "migrations": [
+         "models/migration/**/*.js"
+      ],
+      "subscribers": [
+         "models/subscriber/**/*.js"
+      ],
+      "cli": {
+         "entitiesDir": "models/entity",
+         "migrationsDir": "models/migration",
+         "subscribersDir": "models/subscriber"
+      }
+   
+   },
+   {
+      "name": "try_orm",
+      "type": "sqlite",
+      "database": "try_orm.sqlite",
+      "synchronize": true,
+      "logging": false,
+      "entities": [
+         "try/orm/entity/**/*.js"
+      ],
+      "migrations": [
+         "try/orm/migration/**/*.js"
+      ],
+      "subscribers": [
+         "try/orm/subscriber/**/*.js"
+      ],
+      "cli": {
+         "entitiesDir": "try/orm/entity",
+         "migrationsDir": "try/orm/migration",
+         "subscribersDir": "try/orm/subscriber"
+      }
    }
-}
+]
