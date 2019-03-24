@@ -19,8 +19,8 @@ function menuHome() {
 }
 
 
-function menuAbout() {
-    mainProcess.openAboutWindow();
+function menuSimboli() {
+    mainProcess.openSimboliWindow();
 }
 
 

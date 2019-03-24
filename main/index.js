@@ -8,9 +8,9 @@ const path = require('path');
 const __appdirname = path.normalize(path.join(__dirname,"../app"));
 
 var mainWindow = null;    // finestra principale
-var aboutWindow = null;   // finestra di Info sull'applicazione
+var simboliWindow = null;   // finestra di Info sull'applicazione
 
-exports.openAboutWindow = openAboutWindow;
+exports.openSimboliWindow = openSimboliWindow;
 exports.openMainWindow = openMainWindow;
 
 // When the 'electron' app is ready
@@ -40,21 +40,19 @@ function openMainWindow() {
 
 
 
-function openAboutWindow() {
-  if (aboutWindow) {
-    aboutWindow.focus();
+function openSimboliWindow() {
+  if (simboliWindow) {
+    simboliWindow.focus();
     return;
   }
-  aboutWindow = new BrowserWindow({
-    height: 185,
-    resizable: false,
-    width: 270,
-    title: '',
-    minimizable: false,
-    fullscreenable: false
+  simboliWindow = new BrowserWindow({  
   })
-  aboutWindow.loadURL('file://' + __dirname + '/views/about.html')
-  aboutWindow.on('closed', function() {
-    aboutWindow = null
+  simboliWindow.loadURL(url.format({
+    pathname: __appdirname + "/simboli.html",
+    protocol: "file:",
+    slashes: true
+  }));
+  simboliWindow.on('closed', function() {
+    simboliWindow = null;
   })
 }

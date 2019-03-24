@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>utea-app : Simboli</title>
+  <link rel="stylesheet" href="./css/w3.css">
+  <script defer src="./js/all.js"></script> <!-- Carica FontAwesome -->
+</head>
+<body>
+  <header class="w3-container w3-blue">
+    <h1>Simboli</h1>
+  </header>
+
+  <ul id="listaSimboli"></ul>
+
+  <!-- Form modale per inserimento -->
+  <div id="idModal" class="w3-modal">
+    <div class="w3-modal-content w3-card-4 w3-margin">
+      <header class="w3-container w3-teal">
+        <span onclick="formCancel()" 
+          class="w3-button w3-display-topright">&times;</span>
+          <h2 class="w3-center">Aggiungi Simbolo</h2>
+      </header>
+
+      <form class="w3-container">
+        <label>Sigla</label>
+        <input id="frmSigla" type="text" class="w3-input">
+
+        <label>Descrizione</label>
+        <input id="frmDescrizione" type="text" class="w3-input">
+        <div class="w3-section">
+          <button onclick="formSave(event)" class="w3-btn w3-blue-gray">Salva</button>
+          <button onclick="formCancel()" class="w3-btn w3-pale-red">Annulla</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Pulsante per attivazione form inserimento -->
+  <button onclick="openInsertForm()" class="w3-button">Aggiungi Simbolo</button>
+
+
+  <script src="./simboli.js"></script>
+</body>
+</html>
