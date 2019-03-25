@@ -20,7 +20,6 @@ app.on('ready', () => {
   // activate Vue-devTools
   if (process.env.NODE_ENV !== 'production'){
     require('vue-devtools').install()
-    mainWindow.toggleDevTools();
   }
 
   mainWindow.loadURL(url.format({

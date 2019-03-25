@@ -45,14 +45,23 @@ function openSimboliWindow() {
     simboliWindow.focus();
     return;
   }
-  simboliWindow = new BrowserWindow({  
+
+  simboliWindow = new BrowserWindow()
+
+  simboliWindow.on('closed', function() {
+    simboliWindow = null;
   })
+  
+  // activate Vue-devTools
+  if (process.env.NODE_ENV !== 'production'){
+    require('vue-devtools').install()
+    // simbolWindow.toggleDevTools();
+  }
+
   simboliWindow.loadURL(url.format({
     pathname: __appdirname + "/simboli.html",
     protocol: "file:",
     slashes: true
   }));
-  simboliWindow.on('closed', function() {
-    simboliWindow = null;
-  })
+ 
 }

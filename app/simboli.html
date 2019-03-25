@@ -7,11 +7,22 @@
   <title>utea-app : Simboli</title>
   <link rel="stylesheet" href="./css/w3.css">
   <script defer src="./js/all.js"></script> <!-- Carica FontAwesome -->
+  <script src="../node_modules/vue/dist/vue.js"></script>
+
 </head>
 <body>
   <header class="w3-container w3-blue">
     <h1>Simboli</h1>
   </header>
+
+  <div id="app">
+    <table>
+        <tr v-for="simbolo in simboli">
+            <td>{{simbolo.sigla}}</td>
+            <td>{{simbolo.descrizione.testo}}</td>
+        </tr>      
+    </table>
+  </div>
 
   <div class="w3-container w3-margin">
     <ul id="listaSimboli"></ul>
@@ -21,8 +32,8 @@
   </div>
   
   <!-- Form modale per inserimento -->
-  <div id="idModal" class="w3-modal w3-display-center">
-    <div class="w3-modal-content w3-card-4 w3-margin">
+  <div id="idModal" class="w3-modal">
+    <div class="w3-modal-content w3-card-4 w3-animate-opacity">
       <header class="w3-container w3-teal">
         <span onclick="formCancel(event)" 
           class="w3-button w3-display-topright">&times;</span>
