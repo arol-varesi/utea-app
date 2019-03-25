@@ -11,7 +11,8 @@ createConnection().then(async connection => {
   let ul = document.getElementById("listaSimboli");
   simboli.forEach(simbolo => {
     var li = document.createElement('li');
-    li.innerHTML = simbolo["sigla"] + ": "+ simbolo.descrizione["testo"];
+    var testo = simbolo["sigla"] + ": "+ simbolo.descrizione["testo"];
+    li.innerHTML = testo;
     ul.appendChild(li);
   })
 })
@@ -20,7 +21,8 @@ function openInsertForm() {
   document.getElementById('idModal').style.display='block';
 }
 
-function formCancel() {
+function formCancel(event) {
+  event.preventDefault();
   document.getElementById('idModal').style.display='none';
 }
 
@@ -39,4 +41,5 @@ async function formSave(event) {
 
   
   document.getElementById('idModal').style.display='none';
+  location.reload();
 }

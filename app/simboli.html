@@ -13,13 +13,18 @@
     <h1>Simboli</h1>
   </header>
 
-  <ul id="listaSimboli"></ul>
+  <div class="w3-container w3-margin">
+    <ul id="listaSimboli"></ul>
 
+    <!-- Pulsante per attivazione form inserimento -->
+    <button onclick="openInsertForm()" class="w3-button w3-teal"><i class="far fa-plus-square"></i> Simbolo</button>  
+  </div>
+  
   <!-- Form modale per inserimento -->
-  <div id="idModal" class="w3-modal">
+  <div id="idModal" class="w3-modal w3-display-center">
     <div class="w3-modal-content w3-card-4 w3-margin">
       <header class="w3-container w3-teal">
-        <span onclick="formCancel()" 
+        <span onclick="formCancel(event)" 
           class="w3-button w3-display-topright">&times;</span>
           <h2 class="w3-center">Aggiungi Simbolo</h2>
       </header>
@@ -29,17 +34,16 @@
         <input id="frmSigla" type="text" class="w3-input">
 
         <label>Descrizione</label>
-        <input id="frmDescrizione" type="text" class="w3-input">
-        <div class="w3-section">
-          <button onclick="formSave(event)" class="w3-btn w3-blue-gray">Salva</button>
-          <button onclick="formCancel()" class="w3-btn w3-pale-red">Annulla</button>
-        </div>
+        <input id="frmDescrizione" type="text" class="w3-input">        
       </form>
+      <div class="w3-container">
+        <div class="w3-section w3-margin">
+          <button onclick="formSave(event)" class="w3-btn w3-blue-gray">Salva</button>
+          <button onclick="formCancel(event)" class="w3-btn w3-pale-red">Annulla</button>
+        </div>
+      </div>     
     </div>
   </div>
-
-  <!-- Pulsante per attivazione form inserimento -->
-  <button onclick="openInsertForm()" class="w3-button">Aggiungi Simbolo</button>
 
 
   <script src="./simboli.js"></script>
