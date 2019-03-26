@@ -6,30 +6,43 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>utea-app : Simboli</title>
   <link rel="stylesheet" href="./css/w3.css">
-  <script defer src="./js/all.js"></script> <!-- Carica FontAwesome -->
-  <script src="../node_modules/vue/dist/vue.js"></script>
+  <link rel="stylesheet" href="./css/all.css">
+  <link rel="stylesheet" href="./css/app.css">
+  <!-- <script src="./js/all.js"></script> Carica FontAwesome -->
+
 
 </head>
 <body>
   <header class="w3-container w3-blue">
     <h1>Simboli</h1>
   </header>
-
   <div id="app">
-    <table>
-        <tr v-for="simbolo in simboli">
-            <td>{{simbolo.sigla}}</td>
-            <td>{{simbolo.descrizione.testo}}</td>
-        </tr>      
-    </table>
+    <div v-cloak>
+      <table class="w3-table w3-bordered">
+          <thead>
+            <th>Sigla</th>
+            <th>Descrizione</th>
+          </thead>
+          <tbody>
+            <tr v-for="simbolo in simboli">
+                <td>{{simbolo.sigla}}</td>
+                <td>{{simbolo.descrizione.testo}}</td>
+            </tr>          
+          </tbody>
+      </table>
+      <button onclick="openInsertForm()" class="w3-button w3-teal"><i class="far fa-plus-square"></i> Simbolo</button>  
+    </div>
+
+    <!-- Spinner per attesa caricamento -->
+    <div v-if="!$data">
+      <div class="w3-container">
+          <h2 class="w3-center">
+              <i class="fas fa-spinner w3-spin"></i> Loading
+          </h2>      
+      </div>
+    </div>
   </div>
 
-  <div class="w3-container w3-margin">
-    <ul id="listaSimboli"></ul>
-
-    <!-- Pulsante per attivazione form inserimento -->
-    <button onclick="openInsertForm()" class="w3-button w3-teal"><i class="far fa-plus-square"></i> Simbolo</button>  
-  </div>
   
   <!-- Form modale per inserimento -->
   <div id="idModal" class="w3-modal">
@@ -56,7 +69,8 @@
     </div>
   </div>
 
-
+  <script src="../node_modules/vue/dist/vue.js"></script>
   <script src="./simboli.js"></script>
+
 </body>
 </html>

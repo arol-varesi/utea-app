@@ -9,32 +9,18 @@ async function loadSimboli() {
   return simboli
 }
 
-var simboli = []
-
-createConnection("default").then(async () => {
-  simboli = await loadSimboli();
-
-  var app = new Vue({
-    el: "#app",
-    data: {
-      simboli: simboli
-    }
-  })
-    // var simboli = await connection.getRepository("Simbolo").find();
-  // // crea la lista con tutti i simboli presenti nel database
-  // let ul = document.getElementById("listaSimboli");
-  // simboli.forEach(simbolo => {
-  //   var li = document.createElement('li');
-  //   var testo = simbolo["sigla"] + ": "+ simbolo.descrizione["testo"];
-  //   li.innerHTML = testo;
-  //   ul.appendChild(li);
-  // })
+// var simboli = []
+var app = new Vue({
+  el: "#app",
+  data: {
+    simboli: []
+  }
 })
 
 
-
-
-
+createConnection("default").then(async () => {
+  app.simboli = await loadSimboli();
+})
 
 function openInsertForm() {
   document.getElementById('idModal').style.display='block';
@@ -60,5 +46,5 @@ async function formSave(event) {
 
   
   document.getElementById('idModal').style.display='none';
-  simboli = await loadSimboli();
+  app.simboli = await loadSimboli();
 }
