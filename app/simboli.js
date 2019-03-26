@@ -1,8 +1,14 @@
 // const sqlite = require('sqlite3');
+const { app } = require('electron').remote;
 const typeorm = require('typeorm');
-const { createConnection, getRepository, getConnection} = typeorm;
+const { createConnection, getRepository, getConnection, getConnectionOptions} = typeorm;
 const { Simbolo } = require('../models/entity/Simbolo');
 const { Descrizione } = require('../models/entity/Descrizione');
+
+const mainProcess = require('electron').remote.require('../main/index')
+// const databasePath = app.getPath("appData") + "/database.sqlite";
+const databasePath = "database.sqlite";
+
 
 async function loadSimboli() {
   simboli = await getConnection("default").getRepository("Simbolo").find();
@@ -10,17 +16,22 @@ async function loadSimboli() {
 }
 
 // var simboli = []
-var app = new Vue({
+var VueApp = new Vue({
   el: "#app",
   data: {
     simboli: []
   }
 })
+// Crea la connessione verso il database
 
 
-createConnection("default").then(async () => {
-  app.simboli = await loadSimboli();
+getConnectionOptions("default").then(async connectionOptions => {
+  Object.assign(connectionOptions, {database: databasePath});
+  const connection = await createConnection(connectionOptions);
+}).then( async () => {
+  VueApp.simboli = await loadSimboli();
 })
+
 
 function openInsertForm() {
   document.getElementById('idModal').style.display='block';
@@ -46,5 +57,5 @@ async function formSave(event) {
 
   
   document.getElementById('idModal').style.display='none';
-  app.simboli = await loadSimboli();
+  VueApp.simboli = await loadSimboli();
 }

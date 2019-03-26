@@ -4,3 +4,4 @@ node_modules
 models/**/*.js
 models/**/*.js.map
 *.sqlite
+dist
