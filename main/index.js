@@ -4,6 +4,8 @@ const electron = require ('electron');
 const { app, BrowserWindow, ipcMain } = electron;
 const url = require('url');
 const path = require('path');
+const typeorm = require('typeorm');
+const { createConnection, getRepository, getConnectionOptions} = typeorm;
 
 const __appdirname = path.normalize(path.join(__dirname,"../app"));
 
@@ -12,11 +14,24 @@ var simboliWindow = null;   // finestra di Info sull'applicazione
 
 exports.openSimboliWindow = openSimboliWindow;
 exports.openMainWindow = openMainWindow;
+exports.connectDatabase = connectDatabase;
 
 // When the 'electron' app is ready
 app.on('ready', () => {
   openMainWindow();
 });
+
+// Crea la connessione verso il database
+
+async function connectDatabase(){
+  // legge la configurazione dal file "ormconfig"
+  const connectionOptions = await getConnectionOptions("default");
+  // modifica la posizione del database 
+  let databasePath = app.getPath("appData") + "/database.sqlite";
+  console.error(databasePath)
+  Object.assign(connectionOptions, {database: databasePath});
+  const connection = await createConnection(connectionOptions);
+}
 
 function openMainWindow() {
   if (mainWindow) {

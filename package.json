@@ -1,5 +1,6 @@
 {
    "name": "uteaapp",
+   "main": "./main/index.js",
    "version": "0.1.0",
    "description": "Un'applicazione a supporto delle attività svolte da UTEA",
    "license": "MIT",
@@ -29,7 +30,6 @@
       "datatables.net": "^1.10.19",
       "datatables.net-colreorder-dt": "^1.5.1",
       "datatables.net-dt": "^1.10.19",
-      "electron": "^4.1.0",
       "jquery": "^3.3.1",
       "popper.js": "^1.14.7",
       "sqlite3": "^4.0.6",
@@ -37,6 +37,7 @@
       "vue": "^2.6.9"
    },
    "devDependencies": {
+      "electron": "^4.1.0",
       "electron-builder": "^20.8.1",
       "electron-rebuild": "^1.8.4",
       "eslint": "^5.15.2",
@@ -45,10 +46,12 @@
    },
    "scripts": {
       "start": "tsc && electron main/index.js",
-      "postinstall": "install-app-deps",
+      "postinstall": "electron-builder install-app-deps",
       "csv": "electron try/csv/csvMain.js",
       "orm": "electron try/orm/ormMain.js",
       "vue": "electron try/vue/vueMain.js",
-      "rebuild": "electron-rebuild -f -w sqlite3"
+      "rebuild": "electron-rebuild -f -w sqlite3",
+      "pack": "electron-builder --dir",
+      "dist": "electron-builder"
    }
 }

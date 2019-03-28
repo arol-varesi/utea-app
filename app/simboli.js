@@ -1,8 +1,14 @@
 // const sqlite = require('sqlite3');
+const { app } = require('electron').remote;
 const typeorm = require('typeorm');
-const { createConnection, getRepository, getConnection} = typeorm;
+const { createConnection, getRepository, getConnection, getConnectionOptions} = typeorm;
 const { Simbolo } = require('../models/entity/Simbolo');
 const { Descrizione } = require('../models/entity/Descrizione');
+
+const mainProcess = require('electron').remote.require('../main/index')
+// const databasePath = app.getPath("appData") + "/database.sqlite";
+const databasePath = "database.sqlite";
+
 
 async function loadSimboli() {
   simboli = await getConnection("default").getRepository("Simbolo").find();
@@ -11,7 +17,7 @@ async function loadSimboli() {
 
 
 // var simboli = []
-var app = new Vue({
+var VueApp = new Vue({
   el: "#app",
   data: {
     simboli: []
@@ -23,7 +29,9 @@ var app = new Vue({
     } 
   }
 })
+// Crea la connessione verso il database
 
+<<<<<<< HEAD
 createConnection("default").then(async () => {
   app.simboli = await loadSimboli();
 })
@@ -31,6 +39,20 @@ createConnection("default").then(async () => {
 // function openInsertForm(simbolo) {
 //   document.getElementById('idModal').style.display='block';
 // }
+=======
+
+getConnectionOptions("default").then(async connectionOptions => {
+  Object.assign(connectionOptions, {database: databasePath});
+  const connection = await createConnection(connectionOptions);
+}).then( async () => {
+  VueApp.simboli = await loadSimboli();
+})
+
+
+function openInsertForm() {
+  document.getElementById('idModal').style.display='block';
+}
+>>>>>>> 50fa19e72062ec6e421daac7cece77775fb77a1c
 
 function formCancel(event) {
   event.preventDefault();
@@ -56,6 +78,7 @@ async function formSave(event) {
   simb.descrizione = desc;
   await getConnection().manager.save(simb);
   document.getElementById('idModal').style.display='none';
+<<<<<<< HEAD
   document.getElementById('frmSigla').value = "";
   document.getElementById('frmDescrizione').value = "";
 
@@ -82,3 +105,7 @@ async function newSimbolo() {
   // attiva visualizzazione form
   document.getElementById('idModal').style.display='block';
 }
+=======
+  VueApp.simboli = await loadSimboli();
+}
+>>>>>>> 50fa19e72062ec6e421daac7cece77775fb77a1c
