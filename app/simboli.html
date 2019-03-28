@@ -22,15 +22,17 @@
           <thead>
             <th>Sigla</th>
             <th>Descrizione</th>
+            <th> </th>
           </thead>
           <tbody>
-            <tr v-for="simbolo in simboli">
+            <tr v-for="simbolo in simboli" :key="simbolo.id">
                 <td>{{simbolo.sigla}}</td>
                 <td>{{simbolo.descrizione.testo}}</td>
-            </tr>          
+                <td><i @click="editSimbolo($event)" class="far fa-edit" :sid="simbolo.id"></i></td>
+              </tr>          
           </tbody>
       </table>
-      <button onclick="openInsertForm()" class="w3-button w3-teal"><i class="far fa-plus-square"></i> Simbolo</button>  
+      <button onclick="newSimbolo()" class="w3-button w3-teal"><i class="far fa-plus-square"></i> Simbolo</button>  
     </div>
 
     <!-- Spinner per attesa caricamento -->
@@ -50,10 +52,12 @@
       <header class="w3-container w3-teal">
         <span onclick="formCancel(event)" 
           class="w3-button w3-display-topright">&times;</span>
-          <h2 class="w3-center">Aggiungi Simbolo</h2>
+          <h2 id="frmTitle" class="w3-center">Aggiungi Simbolo</h2>
       </header>
 
       <form class="w3-container">
+        <input id="frmId" style="display: none;">
+
         <label>Sigla</label>
         <input id="frmSigla" type="text" class="w3-input">
 

@@ -54,7 +54,7 @@ function openSimboliWindow() {
   
   // activate Vue-devTools
   if (process.env.NODE_ENV !== 'production'){
-    require('vue-devtools').install()
+  //  require('vue-devtools').install()
     // simbolWindow.toggleDevTools();
   }
 
