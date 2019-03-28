@@ -14,11 +14,12 @@ async function loadSimboli() {
   return simboli
 }
 
-// var simboli = []
+// -------------------------------------
+// Vue.js instanza #app
 var VueApp = new Vue({
   el: "#app",
   data: {
-    simboli: []
+    simboli: [],
   },
   methods: {
     editSimbolo: function (event) {
@@ -27,35 +28,34 @@ var VueApp = new Vue({
     } 
   }
 })
+// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+
+// -------------------------------------
 // Crea la connessione verso il database
-
-createConnection("default").then(async () => {
-  app.simboli = await loadSimboli();
-})
-
-// function openInsertForm(simbolo) {
-//   document.getElementById('idModal').style.display='block';
-// }
-
 getConnectionOptions("default").then(async connectionOptions => {
   Object.assign(connectionOptions, {database: databasePath});
   const connection = await createConnection(connectionOptions);
 }).then( async () => {
   VueApp.simboli = await loadSimboli();
 })
+// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
-function openInsertForm() {
-  document.getElementById('idModal').style.display='block';
-}
+// function openInsertForm() {
+//   document.getElementById('idModal').style.display='block';
+// }''
 
+// -------------------------------------
+// Form editing/aggiunta Simbolo
 
-function formCancel(event) {
+function btnCancel(event) {
   event.preventDefault();
   document.getElementById('idModal').style.display='none';
 }
 
-async function formSave(event) {
+async function btnSave(event) {
   // legge i valori del form
   event.preventDefault();
   simboloID = document.getElementById('frmId').value;  
@@ -75,10 +75,25 @@ async function formSave(event) {
   await getConnection().manager.save(simb);
   document.getElementById('idModal').style.display='none';
 
-  document.getElementById('frmSigla').value = "";
-  document.getElementById('frmDescrizione').value = "";
+  VueApp.simboli = await loadSimboli();
+}
 
-  app.simboli = await loadSimboli();
+async function btnDelete(event) {
+  event.preventDefault();
+  simboloID = document.getElementById('frmId').value;  
+  sigla = document.getElementById('frmSigla').value;
+  descrizione = document.getElementById('frmDescrizione').value;
+  if(simboloID != "new") {
+    simb = await Simbolo.findOne(id = simboloID);
+    desc = simb.descrizione;
+    alert("removing: " + simb.sigla );
+    await getConnection().manager.remove(simb);
+    await getConnection().manager.remove(desc);
+  }
+  document.getElementById('idModal').style.display='none';
+
+  VueApp.simboli = await loadSimboli();
+
 }
 
 
@@ -89,6 +104,9 @@ async function editSimbolo(simboloID) {
   document.getElementById('frmId').value = simboloID;
   document.getElementById('frmSigla').value = simb.sigla;
   document.getElementById('frmDescrizione').value = simb.descrizione.testo;
+
+  // visualizza pulsante "Elimina"
+  document.getElementById('btnDelete').style.display='block';
   // attiva visualizzazione form
   document.getElementById('idModal').style.display='block';
 }
@@ -98,6 +116,9 @@ async function newSimbolo() {
   document.getElementById('frmId').value = "new";
   document.getElementById('frmSigla').value = "";
   document.getElementById('frmDescrizione').value = "";
+  
+  // nascondi pulsante "Elimina"
+  document.getElementById('btnDelete').style.display='none';
   // attiva visualizzazione form
   document.getElementById('idModal').style.display='block';
 }
