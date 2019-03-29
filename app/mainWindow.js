@@ -1,3 +1,4 @@
+'use strict';
 
 // const sqlite = require('sqlite3');
 // const typeorm = require('typeorm');
@@ -13,6 +14,10 @@ function menuHome() {
 
 function menuSimboli() {
     mainProcess.openSimboliWindow();
+}
+
+function menuComponenti() {
+    mainProcess.openComponentiWindow();
 }
 
 

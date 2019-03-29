@@ -9,20 +9,13 @@ const { createConnection, getRepository, getConnectionOptions} = typeorm;
 
 const __appdirname = path.normalize(path.join(__dirname,"../app"));
 
-var mainWindow = null;    // finestra principale
-var simboliWindow = null;   // finestra di Info sull'applicazione
-
-exports.openSimboliWindow = openSimboliWindow;
-exports.openMainWindow = openMainWindow;
-exports.connectDatabase = connectDatabase;
-
 // When the 'electron' app is ready
 app.on('ready', () => {
   openMainWindow();
 });
 
 // Crea la connessione verso il database
-
+exports.connectDatabase = connectDatabase;
 async function connectDatabase(){
   // legge la configurazione dal file "ormconfig"
   const connectionOptions = await getConnectionOptions("default");
@@ -33,50 +26,39 @@ async function connectDatabase(){
   const connection = await createConnection(connectionOptions);
 }
 
-function openMainWindow() {
-  if (mainWindow) {
-    mainWindow.focus();
+
+function openWindow(window, htmlfile){
+  if (window) {
+    window.focus();
     return;
   }
-  mainWindow = new BrowserWindow({
-    width: 800
-  });
+  window = new BrowserWindow();
   // carica il file HTML
-  mainWindow.loadURL(url.format({
-    pathname: __appdirname + "/mainWindow.html",
+  window.loadURL(url.format({
+    pathname: __appdirname + "/" + htmlfile,
     protocol: "file:",
     slashes: true
   }));
   // libera la memoria in caso di chiusura
-  mainWindow.on('closed', () => {
-    mainWindow = null
+  window.on('closed', () => {
+    window = null
   }); 
 }
 
+var mainWindow = null;    // finestra principale
+exports.openMainWindow = openMainWindow;
+function openMainWindow() {
+  openWindow(mainWindow,"mainWindow.html");
+}
 
-
+var simboliWindow = null;   // finestra di Info sull'applicazione
+exports.openSimboliWindow = openSimboliWindow;
 function openSimboliWindow() {
-  if (simboliWindow) {
-    simboliWindow.focus();
-    return;
-  }
+  openWindow(simboliWindow,"simboli.html");
+}
 
-  simboliWindow = new BrowserWindow()
-
-  simboliWindow.on('closed', function() {
-    simboliWindow = null;
-  })
-  
-  // activate Vue-devTools
-  if (process.env.NODE_ENV !== 'production'){
-  //  require('vue-devtools').install()
-    // simbolWindow.toggleDevTools();
-  }
-
-  simboliWindow.loadURL(url.format({
-    pathname: __appdirname + "/simboli.html",
-    protocol: "file:",
-    slashes: true
-  }));
- 
+var componentiWindow = null;   // finestra di Info sull'applicazione
+exports.openComponentiWindow = openComponentiWindow;
+function openComponentiWindow() {
+  openWindow(componentiWindow,"componenti.html");
 }

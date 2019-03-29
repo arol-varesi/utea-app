@@ -2,8 +2,8 @@
 const { app } = require('electron').remote;
 const typeorm = require('typeorm');
 const { createConnection, getRepository, getConnection, getConnectionOptions} = typeorm;
-const { Simbolo } = require('../models/entity/Simbolo');
-const { Descrizione } = require('../models/entity/Descrizione');
+const { Simbolo } = require('../models/specifiche_db/entity/Simbolo');
+const { Descrizione } = require('../models/specifiche_db/entity/Descrizione');
 
 const mainProcess = require('electron').remote.require('../main/index')
 // const databasePath = app.getPath("appData") + "/database.sqlite";
