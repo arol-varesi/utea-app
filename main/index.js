@@ -9,6 +9,7 @@ const { createConnection, getRepository, getConnectionOptions} = typeorm;
 
 const __appdirname = path.normalize(path.join(__dirname,"../app"));
 
+
 // When the 'electron' app is ready
 app.on('ready', () => {
   openMainWindow();
