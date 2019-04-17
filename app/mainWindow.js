@@ -20,4 +20,8 @@ function menuComponenti() {
     mainProcess.openComponentiWindow();
 }
 
+function menuComponentiQ() {
+    mainProcess.openComponentiQWindow();
+}
+
 

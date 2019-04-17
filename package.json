@@ -24,6 +24,7 @@
       "orm"
    ],
    "dependencies": {
+      "@quasar/extras": "^1.1.1",
       "@types/node": "^11.12.2",
       "bootstrap": "^4.3.1",
       "csv-parser": "^2.2.0",
@@ -33,6 +34,7 @@
       "jquery": "^3.3.1",
       "material-design-icons-iconfont": "^4.0.5",
       "popper.js": "^1.14.7",
+      "quasar": "^1.0.0-beta.17",
       "sqlite3": "^4.0.6",
       "typeorm": "^0.2.16",
       "vue": "^2.6.10",
@@ -43,9 +45,11 @@
       "electron-builder": "^20.8.1",
       "electron-rebuild": "^1.8.4",
       "eslint": "^5.16.0",
+      "eslint-loader": "^2.1.2",
       "typeorm-model-generator": "^0.3.2",
       "typescript": "^3.4.1",
-      "vue-devtools": "^5.0.0-beta.1"
+      "vue-devtools": "^5.0.0-beta.1",
+      "webpack": "^4.29.6"
    },
    "scripts": {
       "start": "tsc && electron main/index.js",
@@ -53,6 +57,7 @@
       "csv": "electron try/csv/csvMain.js",
       "orm": "electron try/orm/ormMain.js",
       "vue": "electron try/vue/vueMain.js",
+      "quasar": "electron try/quasar/main.js",
       "rebuild": "electron-rebuild -f -w sqlite3",
       "pack": "electron-builder --dir",
       "dist": "electron-builder"

@@ -63,3 +63,9 @@ exports.openComponentiWindow = openComponentiWindow;
 function openComponentiWindow() {
   openWindow(componentiWindow,"componenti.html");
 }
+
+var componentiQWindow = null;   // finestra di Info sull'applicazione
+exports.openComponentiQWindow = openComponentiQWindow;
+function openComponentiQWindow() {
+  openWindow(componentiQWindow,"componenti_q.html");
+}
