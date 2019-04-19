@@ -69,3 +69,9 @@ exports.openComponentiQWindow = openComponentiQWindow;
 function openComponentiQWindow() {
   openWindow(componentiQWindow,"componenti_q.html");
 }
+
+var testQuasarWindow = null;   // finestra di Info sull'applicazione
+exports.openTestQuasarWindow = openTestQuasarWindow;
+function openTestQuasarWindow() {
+  openWindow(testQuasarWindow,"testquasar.html");
+}

@@ -24,4 +24,8 @@ function menuComponentiQ() {
     mainProcess.openComponentiQWindow();
 }
 
+function menuTestQuasar() {
+    mainProcess.openTestQuasarWindow();
+}
+
 
