@@ -21,7 +21,9 @@
       "nodejs",
       "typescript",
       "typescript-orm",
-      "orm"
+      "orm",
+      "vue",
+      "quasar"
    ],
    "dependencies": {
       "@quasar/extras": "^1.1.1",
