@@ -4,7 +4,7 @@
 
 const typeorm = require('typeorm');
 const { createConnection, getConnection, getConnectionOptions} = typeorm;
-const { codificati } = require('../models/magazzino_ele/codificati');
+const { codificati } = require('../../models/magazzino_ele/codificati');
 
 const mainProcess = require('electron').remote.require('../main/index')
 

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>UTEA App</title>
+   <!-- Quasar Related CSS -->
+   <link href="../../node_modules/@quasar/extras/material-icons/material-icons.css" rel="stylesheet" type="text/css">
+   <link href="../../node_modules/@quasar/extras/fontawesome-v5/fontawesome-v5.css" rel="stylesheet">
+   <link href="../../node_modules/@quasar/extras/ionicons-v4/ionicons-v4.css" rel="stylesheet">
+   <link href="../../node_modules/@quasar/extras/mdi-v3/mdi-v3.css" rel="stylesheet">
+   <!-- <link href="https://cdn.jsdelivr.net/npm/animate.css@^3.5.2/animate.min.css" rel="stylesheet"> -->
+   <link href="../../node_modules/quasar/dist/quasar.min.css" rel="stylesheet" type="text/css">
+  </head>
+<body>
+
+  <div id="app">
+    <!-- Menù di navigazione -->
+    <q-layout>
+      <q-header>
+        <q-bar>
+          <q-btn dense flat icon="fas fa-home"></q-btn>
+          <div class="text-weight-bold">
+            UTEA App
+          </div>
+          <div><router-link to="/simboli" >Simboli</router-link></div>
+          <div><router-link to="/testquasar">TestQuasar</router-link></div>
+          <div><router-link to="/testquasar">TestQuasar2</router-link></div>
+          
+          <q-space></q-space>
+          <div>9:41</div>
+          <q-btn dense flat icon="search"></q-btn>
+          <q-btn dense flat icon="list"></q-btn>
+        </q-bar>
+      </q-header>
+      <q-page-container>
+        <router-view></router-view>
+      </q-page-container>
+    </q-layout>
+  </div>
+
+
+<!-- Vue and VueRouter -->
+<script src="../../node_modules/vue/dist/vue.min.js"></script>
+<script src="../../node_modules/vue-router/dist/vue-router.min.js"></script>
+
+<!-- Quasar related Javascript -->
+<script src="../../node_modules/quasar/dist/quasar.ie.polyfills.umd.min.js"></script>
+<script src="../../node_modules/quasar/dist/quasar.umd.min.js"></script>
+
+<link href="../../node_modules/@quasar/extras/fontawesome-v5/fontawesome-v5.css" rel="stylesheet">
+<!-- Language pack -->
+<script src="../../node_modules/quasar/dist/lang/it.umd.min.js"></script>
+
+<script>
+  Quasar.lang.set(Quasar.lang.it) // notice camel-case "it"
+  Quasar.iconSet.set(Quasar.iconSet.fontawesomeV5) // fontawesomeV5 is just an example
+</script>
+
+<script src="./route.js"></script>
+
+</body>
+</html>

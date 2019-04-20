@@ -7,7 +7,7 @@ const path = require('path');
 const typeorm = require('typeorm');
 const { createConnection, getRepository, getConnectionOptions} = typeorm;
 
-const __appdirname = path.normalize(path.join(__dirname,"../app"));
+const __appdirname = path.normalize(path.join(__dirname,"../renderer"));
 
 
 // When the 'electron' app is ready

@@ -189,7 +189,7 @@ var VueApp = new Vue(app)
 
 const typeorm = require('typeorm');
 const { createConnection, getConnection, getConnectionOptions} = typeorm;
-const { codificati } = require('../models/magazzino_ele/codificati');
+const { codificati } = require('../../models/magazzino_ele/codificati');
 
 // -------------------------------------
 // Crea la connessione verso il database

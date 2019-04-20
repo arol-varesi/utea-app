@@ -40,6 +40,7 @@
       "sqlite3": "^4.0.6",
       "typeorm": "^0.2.16",
       "vue": "^2.6.10",
+      "vue-router": "^3.0.6",
       "vuetify": "^1.5.8"
    },
    "devDependencies": {
@@ -51,10 +52,12 @@
       "typeorm-model-generator": "^0.3.2",
       "typescript": "^3.4.1",
       "vue-devtools": "^5.0.0-beta.1",
-      "webpack": "^4.29.6"
+      "webpack": "^4.29.6",
+      "webpack-cli": "^3.3.0"
    },
    "scripts": {
-      "start": "tsc && electron main/index.js",
+      "start": "tsc && electron src/main/index.js",
+      "spa": "tsc && electron src/main/router.js",
       "postinstall": "electron-builder install-app-deps",
       "csv": "electron try/csv/csvMain.js",
       "orm": "electron try/orm/ormMain.js",
