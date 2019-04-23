@@ -1,20 +1,10 @@
 
 // import Vue from 'vue';
 //import Vuetify from 'vuetify';
-
-const typeorm = require('typeorm');
-const { createConnection, getConnection, getConnectionOptions} = typeorm;
-const { codificati } = require('../../models/magazzino_ele/codificati');
-
-const mainProcess = require('electron').remote.require('../main/index')
+const {getData, getHeaders} = require("./js/databaseMag")
 
 Vue.use(Vuetify);
 
-
-async function loadComponenti() {
-  componenti = await getConnection("magazzinoEle").getRepository(codificati).find();
-  return componenti
-}
 
 // -------------------------------------
 // Vue.js instanza #app
@@ -22,51 +12,19 @@ var VueApp = new Vue({
   el: "#app",
   data: {
     componenti: [], 
-    headers: [
-      { text: 'ArolCode', value: 'ArolCode' },
-      { text: 'Descrizione', value: 'Description'},
-      { text: 'Manufacturer', value: 'Manufacturer'},
-      { text: 'CommercialCode', value: 'CommercialCode'}
-    ],
-    mieidati: [
-      {
-        ArolCode: "B1",
-        Descrizione: "Mancanza tappi",
-        Manufacturer: "IFM",
-        CommercialCode: "BRT456"
-      },
-      {
-        ArolCode: "SQ15",
-        Descrizione: "dajhkjds dfssfdf",
-        Manufacturer: "IFM",
-        CommercialCode: "BRT456"
-      },
-      {
-        ArolCode: "B21",
-        Descrizione: "ManPoistrecanza tapsdfsdfpi",
-        Manufacturer: "OMRON",
-        CommercialCode: "OMR65412"
-      },
-      {
-        ArolCode: "TR1",
-        Descrizione: "Trasformatore tappi",
-        Manufacturer: "POIL",
-        CommercialCode: "TR34WE78"
-      }
-    ]
+    headers: []
   }
 })
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+//VueApp.headers = getHeaders("vuetify")
 
+VueApp.headers = getHeaders("vuetify")
 
-// -------------------------------------
-// Crea la connessione verso il database
-createConnection("magazzinoEle").then(async connection => {
-  VueApp.componenti = await connection.getRepository(codificati).find();
-})
-// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
+async function _getComponenti() {
+  VueApp.componenti = await getData()
+}
+_getComponenti()
 
 Vue.component('button-counter', {
   data: function() {
