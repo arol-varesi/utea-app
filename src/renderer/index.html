@@ -12,11 +12,15 @@
    <link href="../../node_modules/@quasar/extras/mdi-v3/mdi-v3.css" rel="stylesheet">
    <!-- <link href="https://cdn.jsdelivr.net/npm/animate.css@^3.5.2/animate.min.css" rel="stylesheet"> -->
    <link href="../../node_modules/quasar/dist/quasar.min.css" rel="stylesheet" type="text/css">
+   <link rel="stylesheet" href="./css/w3.css">   
+   <link rel="stylesheet" href="./css/app.css">
   </head>
+
 <body>
 
   <div id="app">
     <!-- Menù di navigazione -->
+    <div v-cloak>
     <q-layout>
       <q-header>
         <q-bar>
@@ -38,6 +42,14 @@
         <router-view></router-view>
       </q-page-container>
     </q-layout>
+    </div>
+    <div v-if="!$data">
+        <div class="w3-container">
+            <h2 class="w3-center">
+                <i class="fas fa-spinner w3-spin"></i> Loading...
+            </h2>      
+        </div>
+      </div>
   </div>
 
 
