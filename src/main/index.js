@@ -4,74 +4,61 @@ const electron = require ('electron');
 const { app, BrowserWindow, ipcMain } = electron;
 const url = require('url');
 const path = require('path');
-const typeorm = require('typeorm');
-const { createConnection, getRepository, getConnectionOptions} = typeorm;
 
-const __appdirname = path.normalize(path.join(__dirname,"../renderer"));
+const isDevelopment = process.env.NODE_ENV !== 'production';
 
+let mainWindow = null;    // finestra principale
 
-// When the 'electron' app is ready
-app.on('ready', () => {
-  openMainWindow();
-});
+function createMainWindow(){
 
-// Crea la connessione verso il database
-exports.connectDatabase = connectDatabase;
-async function connectDatabase(){
-  // legge la configurazione dal file "ormconfig"
-  const connectionOptions = await getConnectionOptions("default");
-  // modifica la posizione del database 
-  let databasePath = app.getPath("appData") + "/database.sqlite";
-  console.error(databasePath)
-  Object.assign(connectionOptions, {database: databasePath});
-  const connection = await createConnection(connectionOptions);
-}
-
-
-function openWindow(window, htmlfile){
-  if (window) {
-    window.focus();
-    return;
-  }
-  window = new BrowserWindow();
+  const window = new BrowserWindow();
   // carica il file HTML
-  window.loadURL(url.format({
-    pathname: __appdirname + "/" + htmlfile,
-    protocol: "file:",
-    slashes: true
-  }));
+ 
+  if (isDevelopment) {
+    window.webContents.openDevTools()
+  }
+
+  if (isDevelopment) {
+    window.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`)
+  } else {
+    window.loadURL(url.format({
+      pathname: path.join(__dirname, "index.html"),
+      protocol: "file:",
+      slashes: true
+    }))
+  };
+
   // libera la memoria in caso di chiusura
   window.on('closed', () => {
-    window = null
+    mainWindow = null;
   }); 
+
+  window.webContents.on('devtools-opened', () => {
+    window.focus();
+    setImmediate(() => {
+      window.focus();
+    });
+  });
+  
+  return window
 }
 
-var mainWindow = null;    // finestra principale
-exports.openMainWindow = openMainWindow;
-function openMainWindow() {
-  openWindow(mainWindow,"mainWindow.html");
-}
+// quit application when all windows are closed
+app.on('window-all-closed', () => {
+  // on macOS it is common for applications to stay open until the user explicitly quits
+  if (process.platform !== 'darwin') {
+    app.quit()
+  }
+})
 
-var simboliWindow = null;   // finestra di Info sull'applicazione
-exports.openSimboliWindow = openSimboliWindow;
-function openSimboliWindow() {
-  openWindow(simboliWindow,"simboli.html");
-}
+app.on('activate', () => {
+  // on macOS it is common to re-create a window even after all windows have been closed
+  if (mainWindow === null) {
+    mainWindow = createMainWindow()
+  }
+})
 
-var componentiWindow = null;   // finestra di Info sull'applicazione
-exports.openComponentiWindow = openComponentiWindow;
-function openComponentiWindow() {
-  openWindow(componentiWindow,"componenti.html");
-}
-
-var componentiQWindow = null;   // finestra di Info sull'applicazione
-exports.openComponentiQWindow = openComponentiQWindow;
-function openComponentiQWindow() {
-  openWindow(componentiQWindow,"componenti_q.html");
-}
-
-var testQuasarWindow = null;   // finestra di Info sull'applicazione
-exports.openTestQuasarWindow = openTestQuasarWindow;
-function openTestQuasarWindow() {
-  openWindow(testQuasarWindow,"testquasar.html");
-}
+// create main BrowserWindow when electron is ready
+app.on('ready', () => {
+  mainWindow = createMainWindow()
+})

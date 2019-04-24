@@ -5,7 +5,7 @@ const { createConnection, getRepository, getConnection, getConnectionOptions} = 
 const { Simbolo } = require('../../models/specifiche_db/entity/Simbolo');
 const { Descrizione } = require('../../models/specifiche_db/entity/Descrizione');
 
-const mainProcess = require('electron').remote.require('../main/index')
+const mainProcess = require('electron').remote.require('../main/main')
 // const databasePath = app.getPath("appData") + "/database.sqlite";
 const databasePath = "database.sqlite";
 

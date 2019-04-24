@@ -58,7 +58,7 @@
       "webpack": "^4.30.0"
    },
    "scripts": {
-      "start": "tsc && electron src/main/index.js",
+      "start": "tsc && electron src/main/main.js",
       "spa": "tsc && electron src/main/router.js",
       "postinstall": "electron-builder install-app-deps",
       "csv": "electron try/csv/csvMain.js",

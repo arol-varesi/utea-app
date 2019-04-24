@@ -4,7 +4,7 @@
 // const typeorm = require('typeorm');
 // const { createConnection, getRepository } = typeorm;
 
-const mainProcess = require('electron').remote.require('../main/index')
+const mainProcess = require('electron').remote.require('../main/main')
 
 
 function menuHome() {
