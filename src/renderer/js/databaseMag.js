@@ -1,6 +1,7 @@
 const typeorm = require('typeorm');
 const { createConnection, getConnection, getConnectionOptions} = typeorm;
 const { codificati } = require('../../../models/magazzino_ele/codificati');
+const path = require('path')
 
 const headers = [
   {field: "ArolCode", label: "ArolCode"},
@@ -10,16 +11,26 @@ const headers = [
 ]
 
 let connection = null
+let fileMagEleDB
+
+try { 
+  fileMagEleDB = path.join(__static, "db/MagazzinoEle.db")
+}
+catch(err) {
+  fileMagEleDB = path.join(__dirname, "../../../static/db/MagazzinoEle.db")
+}
+
 
 async function getData() {
   if (connection === null){
-    connection = await createConnection("magazzinoEle")
+    const connectionOption = await getConnectionOptions("magazzinoEle");
+    Object.assign(connectionOption, {database: fileMagEleDB});
+    Object.assign(connectionOption, { entities: [codificati]})
+    connection = await createConnection(connectionOption);
   }
   data = await connection.getRepository(codificati).find();
   return data
 }
-
-
 
 function getHeaders(type = null, sortable = false) {
   let retvalue = []

@@ -49,17 +49,20 @@
       "electron-builder": "^20.8.1",
       "electron-rebuild": "^1.8.4",
       "electron-webpack": "^2.6.2",
+      "electron-webpack-eslint": "^4.0.1",
+      "electron-webpack-vue": "^2.2.3",
       "eslint": "^5.16.0",
       "eslint-loader": "^2.1.2",
+      "eslint-plugin-html": "^5.0.3",
+      "eslint-plugin-vue": "^5.2.2",
       "typeorm-model-generator": "^0.3.2",
       "typescript": "^3.4.1",
       "vue-devtools": "^5.0.0-beta.1",
-      "vue-loader": "^15.7.0",
       "webpack": "^4.30.0"
    },
    "scripts": {
-      "start": "tsc && electron src/main/main.js",
-      "spa": "tsc && electron src/main/router.js",
+      "start": "tsc --build models/tsconfig.json && electron src/main/main.js",
+      "spa": "tsc --build models/tsconfig.json && electron src/main/router.js",
       "postinstall": "electron-builder install-app-deps",
       "csv": "electron try/csv/csvMain.js",
       "orm": "electron try/orm/ormMain.js",
@@ -67,7 +70,10 @@
       "quasar": "electron try/quasar/main.js",
       "rebuild": "electron-rebuild -f -w sqlite3",
       "pack": "electron-builder --dir",
-      "dist": "electron-builder",
-      "dev": "electron-webpack dev"
+
+      "dev": "electron-webpack dev",
+      "compile": "electron-webpack",
+      "dist": "yarn compile && electron-builder",
+      "dist:dir": "yarn dist -- --dir -c.compression=store -c.mac.identity=null"
    }
 }
