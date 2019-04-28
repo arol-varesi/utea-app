@@ -1,20 +1,25 @@
+/**
+ * routes.js
+ * ---------
+ * Apportare a questo file tutte le modifiche necessarie aggiungendo tutti 
+ * i link utilizzati dal router
+ * 
+ **/
+
+const { MagEle } = require('../pages/MagEle')
+const { TestQuasar } = require('../pages/testquasar')
+const { ComponentA }  = require('../pages/prova') 
 
 const routes = [
-  {
-    path: '/',
-    component: () => import('layouts/MyLayout.vue'),
+  { path: '/',
+    component: () => import('../layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/Index.vue') }
+//      { path: '', component: () => import('pages/Index.vue') }
+      { path: '/mag', component: MagEle },
+      { path: '/testquasar', component: TestQuasar },
+      { path: '/simboli',  component: ComponentA }
     ]
-  }
+ }
 ]
-
-// Always leave this as last one
-if (process.env.MODE !== 'ssr') {
-  routes.push({
-    path: '*',
-    component: () => import('pages/Error404.vue')
-  })
-}
 
 export default routes

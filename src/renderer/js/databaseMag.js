@@ -26,7 +26,11 @@ async function getData() {
     const connectionOption = await getConnectionOptions("magazzinoEle");
     Object.assign(connectionOption, {database: fileMagEleDB});
     Object.assign(connectionOption, { entities: [codificati]})
-    connection = await createConnection(connectionOption);
+    try {
+      connection = await createConnection(connectionOption);
+    } catch (err){
+      throw(err)
+    }
   }
   data = await connection.getRepository(codificati).find();
   return data

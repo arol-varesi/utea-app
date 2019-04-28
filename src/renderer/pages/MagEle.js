@@ -3,6 +3,8 @@ const {getData, getHeaders} = require("../js/databaseMag")
 var MagEle = {
   data: function () {
     return {
+      error: false,
+      errortext: "",
       componenti: [],
       headers: getHeaders(type="qtable", sortable=true),
       icon: false,
@@ -13,7 +15,13 @@ var MagEle = {
   },
   methods: {
     async loadComponenti() {
-      this.componenti = await getData()
+      try {
+        this.componenti = await getData()
+      } catch (err){
+        this.error = false
+        this.errortext = err
+      }
+
     }
   },
   created () {      
@@ -29,6 +37,9 @@ var MagEle = {
       :columns="headers"
       row-key="name" >
     </q-table>
+    <div v-if="error">
+      Error apertura Database: {{errortext}}
+    </div>
   </div>
   `
 }
