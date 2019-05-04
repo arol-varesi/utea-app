@@ -61,19 +61,20 @@
       "webpack": "^4.30.0"
    },
    "scripts": {
-      "start": "tsc --build models/tsconfig.json && electron src/main/main.js",
-      "spa": "tsc --build models/tsconfig.json && electron src/main/router.js",
-      "postinstall": "electron-builder install-app-deps",
-      "csv": "electron try/csv/csvMain.js",
-      "orm": "electron try/orm/ormMain.js",
-      "vue": "electron try/vue/vueMain.js",
-      "quasar": "electron try/quasar/main.js",
-      "rebuild": "electron-rebuild -f -w sqlite3",
-      "pack": "electron-builder --dir",
-
       "dev": "electron-webpack dev",
       "compile": "electron-webpack",
       "dist": "yarn compile && electron-builder",
-      "dist:dir": "yarn dist -- --dir -c.compression=store -c.mac.identity=null"
+      "dist:dir": "yarn dist -- --dir -c.compression=store -c.mac.identity=null",
+
+      "try:electron": "tsc --build models/tsconfig.json && electron try/electron/main/main.js",
+      "try:spa": "tsc --build models/tsconfig.json && electron try/electron/main/router.js",
+      "try:csv": "electron try/csv/csvMain.js",
+      "try:orm": "electron try/orm/ormMain.js",
+      "try:vue": "electron try/vue/vueMain.js",
+      
+      "postinstall": "electron-builder install-app-deps",
+      "rebuild": "electron-rebuild -f -w sqlite3",
+      "pack": "electron-builder --dir"
+
    }
 }

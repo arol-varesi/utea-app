@@ -1,13 +1,13 @@
 const typeorm = require('typeorm');
 const { createConnection, getConnection, getConnectionOptions} = typeorm;
-const { codificati } = require('../../../models/magazzino_ele/codificati');
+const { codificati } = require('../../../../models/magazzino_ele/codificati');
 const path = require('path')
 
 const { app } = require('electron').remote;
 
 // const __appPath = app.getPath("desktop");
 // const __appPath = app.getAppPath();
-const __appPath = path.normalize(path.join(__dirname,"../../../"))
+const __appPath = path.normalize(path.join(__dirname,"../../../../"))
 
 const headers = [
   {field: "ArolCode", label: "ArolCode"},
@@ -46,13 +46,14 @@ let connection = null
 let fileMagEleDB
 
 
-try { 
-  fileMagEleDB = path.join(__static, "db/MagazzinoEle.db")
+// try { 
+//   fileMagEleDB = path.join(__static, "db/MagazzinoEle.db")
 //  fileMagEleDB = path.join(__appPath, "MagazzinoEle.db")
-}
-catch(err) {
-  fileMagEleDB = path.join(__appPath, "MagazzinoEle.db")
-}
+// }
+// catch(err) {
+  fileMagEleDB = path.join(__appPath, "static/db/MagazzinoEle.db")
+  console.log(fileMagEleDB)
+// }
 
 async function getData() {
   if (connection === null){
