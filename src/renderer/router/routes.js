@@ -17,7 +17,8 @@ const routes = [
 //      { path: '', component: () => import('pages/Index.vue') }
       { path: '/mag', component: MagEle },
       { path: '/testquasar', component: TestQuasar },
-      { path: '/simboli',  component: ComponentA }
+      { path: '/simboli',  component: ComponentA },
+      { path: '/info', component: () => import("../pages/info.vue")}
     ]
  }
 ]

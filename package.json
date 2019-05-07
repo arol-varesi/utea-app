@@ -65,16 +65,13 @@
       "compile": "electron-webpack",
       "dist": "yarn compile && electron-builder",
       "dist:dir": "yarn dist -- --dir -c.compression=store -c.mac.identity=null",
-
       "try:electron": "tsc --build models/tsconfig.json && electron try/electron/main/main.js",
       "try:spa": "tsc --build models/tsconfig.json && electron try/electron/main/router.js",
       "try:csv": "electron try/csv/csvMain.js",
       "try:orm": "electron try/orm/ormMain.js",
       "try:vue": "electron try/vue/vueMain.js",
-      
       "postinstall": "electron-builder install-app-deps",
       "rebuild": "electron-rebuild -f -w sqlite3",
       "pack": "electron-builder --dir"
-
    }
 }

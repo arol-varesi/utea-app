@@ -6,6 +6,12 @@ Ogni tecnologia testata è racchiusa inn una ulteriore cartella dedicata e può 
 ``` bash
 npm run 'nome'
 ```
+oppure ancor più consigliato:
+
+``` bash
+yarn 'nome'
+```
+
 
 Di seguito sono elencate le tecnologie presenti.
 
@@ -25,3 +31,10 @@ Test di utilizzo di database in formato SQLite tramite libreria TypeORM, che per
 Test per l'uso del framework Vue.js
 
 Permette di inserire all'interno del codice html variabili, funzioni, template e form in modo reattivo direttamente collegate a strutture presenti nel codice javascript. 
+
+## ELECTRON + SPA
+Test per l'uso di electron 
+
+Sono create due differenti configurazioni: 
+- una con "multifinestra" richiamata tramite `yarn try:electron` 
+- l'altra "single page application" richiamata tramite `yarn try:spa`

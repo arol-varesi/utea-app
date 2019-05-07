@@ -6,6 +6,7 @@ var MagEle = {
   data: function () {
     return {
       error: false,
+      errortext: "",
       databasePath: databaseMag.databasePath,
       componenti: [],
       // headers: getHeaders(type="qtable", sortable=true),
@@ -20,11 +21,12 @@ var MagEle = {
   methods: {
     async loadComponenti() {
       try {
-        this.componenti = await getData()
- //         this.componenti = await databaseMag.dati
-      } catch {
+        // this.componenti = await getData()
+        this.componenti = await databaseMag.dati
+      } catch (err) {
         this.componenti = []
         this.error = true
+        this.errortext = err
       }
     }
   },
@@ -35,7 +37,7 @@ var MagEle = {
   template:
   `
   <div class="q-pa-md">
-    <p v-if="error">Errore !!! : {{ databasePath }}</p>
+    <p v-if="error">Errore ({{errortext}}) : {{ databasePath }}</p>
     <q-table
       title="Componenti"
       :data="componenti"
