@@ -1,24 +1,28 @@
 <template>
-  <div class="q-pa-md">
-      <h4>Informazioni sull'applicazione</h4>
-    <q-card class="electron-card">
-      <q-card-section>
-        <div class="text-h6">Electron</div>
-      </q-card-section>
-      <q-separator />
-      <q-list>
-         <q-item v-for="(info, name) in infos" :key="name">
-          <q-item-section avatar>
-            <q-icon name="folder"/>
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>{{name}}</q-item-label>
-            <q-item-label caption>{{ info }}</q-item-label>
+  <q-page>
+    <div class="q-mx-md">
+        <h4 class="q-mt-none q-mb-sm">Informazioni sull'applicazione</h4>
+      <q-card  class="electron-card shadow-8">
+        <div class="gt-xs">
+          <q-card-section>
+            <div class="text-h6">Electron</div>
+          </q-card-section>
+        <q-separator />
+        </div>
+        <q-list>
+          <q-item v-for="(info, index) in infos" :key="index">
+            <q-item-section avatar>
+              <q-icon :name="info.icon"/>
             </q-item-section>
-        </q-item>
-      </q-list>
-    </q-card>
-  </div>
+            <q-item-section>
+              <q-item-label>{{info.label}}</q-item-label>
+              <q-item-label caption>{{ info.value }}</q-item-label>
+              </q-item-section>
+          </q-item>
+        </q-list>
+      </q-card>
+    </div>
+</q-page>
 </template>
 
 <script>
@@ -28,14 +32,16 @@ export default {
   name: 'Info', 
   data () {
     return {
-      infos: {
-        appData: app.getPath('appData'),
-        appPath: app.getAppPath(),
-        appVersion: app.getVersion(),
-        appName: app.getName(),
-        electronVersion: process.versions.electron,
-        chromeversion: process.versions.chrome,
-      }
+      infos: [
+        {label: "appData Path", value: app.getPath('appData'), icon: "folder" },
+        {label: "appPath" , value: app.getAppPath(), icon: "folder"},
+        {label: "userData" , value: app.getPath('userData'), icon: "folder"},
+        {label: "appVersion", value: app.getVersion(), icon: "ion-logo-npm"},
+        {label: "appName", value: app.getName(), icon: "eva-shield-outline"},
+        {label: "Electron version", value: process.versions.electron, icon: "mdi-alert-circle-outline"},
+        {label: "Chrome version", value: process.versions.chrome, icon: "fab fa-chrome"},
+        {label: "Quasar version", value: this.$q.version, icon: "ti-hand-point-up"},
+      ]
     }
   }
 }
@@ -43,6 +49,6 @@ export default {
 
 <style scoped>
 .electron-card {
- ;
+  color:indigo;
 }
 </style>
