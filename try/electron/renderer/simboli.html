@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>utea-app : Simboli</title>
+  <link rel="stylesheet" href="./css/w3.css">
+  <link rel="stylesheet" href="./css/all.css">
+  <link rel="stylesheet" href="./css/app.css">
+  <!-- <script src="./js/all.js"></script> Carica FontAwesome -->
+
+
+</head>
+<body>
+  <header class="w3-container w3-blue ">
+    <h1>Simboli</h1>
+  </header>
+  <div id="app">
+    <div v-cloak>
+      <input type="text" class="w3-input w3-border w3-padding" placeholder="Ricerca per Sigla..." id="cercaSigla">
+
+
+      <table class="w3-table w3-bordered w3-margin-top">
+          <thead>
+            <th>Sigla</th>
+            <th>Descrizione</th>
+            <th> </th>
+          </thead>
+          <tbody>
+            <tr v-for="simbolo in simboli" :key="simbolo.id">
+                <td>{{simbolo.sigla}}</td>
+                <td>{{simbolo.descrizione.testo}}</td>
+                <td><i @click="editSimbolo($event)" class="far fa-edit" :sid="simbolo.id"></i></td>
+              </tr>          
+          </tbody>
+      </table>
+      <button onclick="newSimbolo()" class="w3-button w3-teal"><i class="far fa-plus-square"></i> Simbolo</button>  
+    </div>
+
+    <!-- Spinner per attesa caricamento -->
+    <div v-if="!$data">
+      <div class="w3-container">
+          <h2 class="w3-center">
+              <i class="fas fa-spinner w3-spin"></i> Loading
+          </h2>      
+      </div>
+    </div>
+  </div>
+
+  
+  <!-- Form modale per inserimento -->
+  <div id="idModal" class="w3-modal">
+    <div class="w3-modal-content w3-card-4 w3-animate-top">
+      <header class="w3-container w3-teal">
+        <span onclick="btnCancel(event)" 
+          class="w3-button w3-display-topright">&times;</span>
+          <h2 id="frmTitle" class="w3-center">Aggiungi Simbolo</h2>
+      </header>
+
+
+      <form class="w3-container">
+        <input id="frmId" style="display: none;">
+
+        <label>Sigla</label>
+        <input id="frmSigla" type="text" class="w3-input">
+
+        <label>Descrizione</label>
+        <input id="frmDescrizione" type="text" class="w3-input">        
+      </form>
+      <div class="w3-container">
+        <div class="w3-section w3-margin">
+          <button onclick="btnSave(event)" class="w3-btn w3-blue-gray">Salva</button>
+          <button onclick="btnCancel(event)" class="w3-btn w3-gray">Annulla</button>
+          <button id="btnDelete" onclick="btnDelete(event)" class="w3-btn w3-red w3-right">Elimina</button>
+        </div>
+      </div>     
+    </div>
+  </div>
+
+  <script src="../../../node_modules/vue/dist/vue.js"></script>
+  <script src="./simboli.js"></script>
+
+</body>
+</html>

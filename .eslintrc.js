@@ -1,18 +1,28 @@
 module.exports = {
-    "env": {
-        "browser": true,
-        "commonjs": true,
-        "es6": true,
-        "node": true
+    root: true,
+
+    parserOptions: {
+        parser: 'babel-eslint',
+        sourceType: "module",
+        ecmaVersion: 2018
     },
-    "globals": {
-        "Atomics": "readonly",
-        "SharedArrayBuffer": "readonly"
+
+    env: {
+        browser: true,
+        commonjs: true,
+        es6: true,
+        node: true
     },
-    "parserOptions": {
-        "sourceType": "module",
-        "ecmaVersion": 2018
+
+    extends: [
+        'plugin:vue/essential'
+    ],
+
+    plugins: [
+        'vue'
+    ],
+
+    globals: {
+        __statics: true
     },
-    "rules": {
-    }
-};
+ };

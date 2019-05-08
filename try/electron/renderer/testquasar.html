@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>TestQuasar</title>
+   <!-- Do you need Material Icons? -->
+   <!-- <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons" rel="stylesheet" type="text/css"> -->
+   <link href="../../../node_modules/@quasar/extras/material-icons/material-icons.css" rel="stylesheet" type="text/css">
+
+   <!-- Do you need Fontawesome? -->
+   <!-- <link href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" rel="stylesheet"> -->
+   <link href="../../../node_modules/@quasar/extras/fontawesome-v5/fontawesome-v5.css" rel="stylesheet">
+ 
+   <!-- Do you need Ionicons? -->
+   <!-- <link href="https://cdn.jsdelivr.net/npm/ionicons@^4.0.0/dist/css/ionicons.min.css" rel="stylesheet"> -->
+   <link href="../../../node_modules/@quasar/extras/ionicons-v4/ionicons-v4.css" rel="stylesheet">
+ 
+   <!-- Do you need MDI? -->
+   <!-- <link href="https://cdn.jsdelivr.net/npm/@mdi/font@^3.0.0/css/materialdesignicons.min.css" rel="stylesheet"> -->
+   <link href="../../../node_modules/@quasar/extras/mdi-v3/mdi-v3.css" rel="stylesheet">
+ 
+   <!-- Do you need all animations? -->
+   <!-- <link href="https://cdn.jsdelivr.net/npm/animate.css@^3.5.2/animate.min.css" rel="stylesheet"> -->
+
+ 
+   <!--
+     Finally, add Quasar's CSS:
+     Replace version below (1.0.0-beta.0) with your desired version of Quasar.
+     Add ".rtl" for the RTL support (example: quasar.rtl.min.css).
+   -->
+   <!-- <link href="https://cdn.jsdelivr.net/npm/quasar@^1.0.0-beta.17/dist/quasar.min.css" rel="stylesheet" type="text/css"> -->
+   <link href="../../../node_modules/quasar/dist/quasar.min.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+  <div id="my-page"></div>
+
+  <div id="q-app">
+      <q-bar>
+          <q-btn dense flat icon="fab fa-apple"></q-btn>
+          <div class="text-weight-bold">
+            Test Quasar (UMD version)
+          </div>
+          <div class="cursor-pointer gt-sm">File</div>
+          <div class="cursor-pointer gt-sm">Edit</div>
+          <div class="cursor-pointer gt-sm">View</div>
+          <div class="cursor-pointer gt-sm">Window</div>
+          <div class="cursor-pointer gt-sm">Help</div>
+          <q-space></q-space>
+          <q-btn dense flat icon="airplay" class="gt-xs">
+          <q-btn dense flat icon="battery_charging_full"></q-btn>
+          <q-btn dense flat icon="wifi"></q-btn>
+          <div>9:41</div>
+          <q-btn dense flat icon="search"></q-btn>
+          <q-btn dense flat icon="list"></q-btn>
+        </q-bar>
+
+    <div class="q-pa-md">
+      <q-table
+        title="Treats"
+        :data="data"
+        :columns="columns"
+        row-key="name"
+      ></q-table>
+    </div>
+    <div class="q-pa-md q-gutter-sm">
+        <q-btn label="Close Icon" color="primary" @click="icon = true"></q-btn>
+        <q-btn label="With QBar" color="primary" @click="bar = true"></q-btn>
+        <q-btn label="Another QBar" color="primary" @click="bar2 = true"></q-btn>
+        <q-btn label="With QToolbar" color="primary" @click="toolbar = true"></q-btn>
+        <q-dialog v-model="bar2" persistent transition-show="flip-down" transition-hide="flip-up">
+            <q-card class="bg-primary text-white">
+              <q-bar>
+                <q-icon name="network_wifi"></q-icon>
+                <q-icon name="network_cell"></q-icon>
+                <q-icon name="battery_full"></q-icon>
+                <div>9:34</div>
+      
+                <q-space></q-space>
+      
+                <q-btn dense flat icon="close" v-close-popup>
+                  <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
+                </q-btn>
+              </q-bar>
+      
+              <q-card-section>
+                <div class="text-h6">Alert</div>
+              </q-card-section>
+      
+              <q-card-section>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum repellendus sit voluptate voluptas eveniet porro. Rerum blanditiis perferendis totam, ea at omnis vel numquam exercitationem aut, natus minima, porro labore.
+              </q-card-section>
+            </q-card>
+          </q-dialog>
+    </div>
+
+  </div>
+
+
+
+<!-- Do you want IE support? Replace "1.0.0-beta.0" with your desired Quasar version -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/quasar@^1.0.0-beta.17/dist/quasar.ie.polyfills.umd.min.js"></script> -->
+<script src="../../../node_modules/quasar/dist/quasar.ie.polyfills.umd.min.js"></script>
+
+<!-- You need Vue too -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/vue@latest/dist/vue.min.js"></script> -->
+<script src="../../../node_modules/vue/dist/vue.min.js"></script>
+
+<!--
+  Add Quasar's JS:
+  Replace version below (1.0.0-beta.0) with your desired version of Quasar.
+-->
+<!-- <script src="https://cdn.jsdelivr.net/npm/quasar@^1.0.0-beta.17/dist/quasar.umd.min.js"></script> -->
+<script src="../../../node_modules/quasar/dist/quasar.umd.min.js"></script>
+
+<!--
+  If you want to add a Quasar Language pack (other than "en-us").
+  Notice "pt-br" in "i18n.pt-br.umd.min.js" for Brazilian Portuguese language pack.
+  Replace version below (1.0.0-beta.0) with your desired version of Quasar.
+  Also check final <script> tag below to enable the language
+  Language pack list: https://github.com/quasarframework/quasar/tree/dev/quasar/lang
+-->
+<!-- <script src="https://cdn.jsdelivr.net/npm/quasar@^1.0.0-beta.17/dist/lang/it.umd.min.js"></script> -->
+<script src="../../../node_modules/quasar/dist/lang/it.umd.min.js"></script>
+
+<!--
+  If you want to make Quasar components (not your own) use a specific set of icons (unless you're using Material Icons already).
+  Replace version below (1.0.0-beta.0) with your desired version of Quasar.
+  Icon sets list: https://github.com/quasarframework/quasar/tree/dev/quasar/icon-set
+-->
+<!-- <script src="https://cdn.jsdelivr.net/npm/quasar@^1.0.0-beta.17/dist/icon-set/fontawesome-v5.umd.min.js"></script> -->
+<script src="../../../node_modules/quasar/icon-set/fontawesome-v5.js"></script>
+
+<script src="./testquasar.js"></script>
+
+</body>
+</html>
