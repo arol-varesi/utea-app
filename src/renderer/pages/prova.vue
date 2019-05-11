@@ -1,5 +1,23 @@
+<template>
+  <div class="q-pa-md q-gutter-sm">
+    <q-btn color="primary" icon="mail" label="On Left"></q-btn>
+    <q-btn color="secondary" icon-right="mail" label="On Right"></q-btn>
+    <q-btn color="red" icon="mail" icon-right="send" label="On Left and Right"></q-btn>
+    <br>
+    <div class="q-pa-md">
+      <q-table
+        title="Treats"
+        :data="data"
+        :columns="columns"
+        row-key="name">
+      </q-table>
+    </div>
+  </div>
+</template>
 
-var ComponentA = {
+<script>
+export default {
+  name: 'prova',
   data: function () {
     return {
       name: 'prova',
@@ -18,23 +36,11 @@ var ComponentA = {
         { A: 901, B: 3, C: 54, D: "nonas" },
       ]
     }
-  },
-  template:
-    `
-    <div class="q-pa-md q-gutter-sm">
-      <q-btn color="primary" icon="mail" label="On Left"></q-btn>
-      <q-btn color="secondary" icon-right="mail" label="On Right"></q-btn>
-      <q-btn color="red" icon="mail" icon-right="send" label="On Left and Right"></q-btn>
-      <br>
-      <div class="q-pa-md">
-        <q-table
-          title="Treats"
-          :data="data"
-          :columns="columns"
-          row-key="name">
-        </q-table>
-     </div>
-    </div>
-    `
+  }
 }
-exports.ComponentA = ComponentA
+</script>
+
+
+<style scoped>
+
+</style>

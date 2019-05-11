@@ -6,21 +6,46 @@
  * 
  **/
 
-const { MagEle } = require('../pages/MagEle')
-const { TestQuasar } = require('../pages/testquasar')
-const { ComponentA }  = require('../pages/prova') 
-
 const routes = [
   { path: '/',
     component: () => import('../layouts/MainLayout.vue'),
     children: [
-//      { path: '', component: () => import('pages/Index.vue') }
-      { path: '/mag', component: MagEle },
-      { path: '/testquasar', component: TestQuasar },
-      { path: '/simboli',  component: ComponentA },
-      { path: '/info', component: () => import("../pages/info.vue")}
+      { menu: 'Pagine',
+        name: 'Componenti', 
+        path: '/mag', 
+        component: () => import('../pages/magEle.vue')},
+      { menu: 'Pagine',
+        name: 'TestQuasar', 
+        path: '/testquasar', 
+        component: () => import('../pages/testquasar.vue') },
+      { menu: 'Pagine',
+        name: 'Simboli',
+        path: '/simboli',  
+        component: () => import('../pages/prova.vue')},
+      { menu: '?',
+        name: 'Info',
+        path: '/info', 
+        component: () => import("../pages/info.vue")}
     ]
  }
 ]
 
 export default routes
+
+
+// const pages = [
+//   { name: 'Componenti', 
+//     path: '/mag', 
+//     component: () => import('../pages/magEle.vue')},
+//   { name: 'TestQuasar', 
+//     path: '/testquasar', 
+//     component: () => import('../pages/testquasar.vue')},
+//   { name: 'Simboli', 
+//     path: '/simboli', 
+//     component: () => import('../pages/prova.vue')},
+//   { name: 'Info', 
+//     path: '/info', 
+//     component: () => import('../pages/info.vue')},
+// ]
+
+// export default pages

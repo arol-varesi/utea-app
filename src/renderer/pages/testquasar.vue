@@ -1,4 +1,17 @@
-var TestQuasar = {
+<template>
+  <div class="q-pa-md">
+    <q-table
+      title="Treats"
+      :data="data"
+      :columns="columns"
+      row-key="name" >
+    </q-table>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'testquasar',
   data: function () {
     return {
       icon: false,
@@ -127,17 +140,10 @@ var TestQuasar = {
     ]
     }
   },
-  methods: {},
-  template:
-  `
-  <div class="q-pa-md">
-    <q-table
-      title="Treats"
-      :data="data"
-      :columns="columns"
-      row-key="name" >
-    </q-table>
-  </div>
-  `
+  methods: {}, 
 }
-exports.TestQuasar = TestQuasar
+</script>
+
+<style scoped>
+
+</style>

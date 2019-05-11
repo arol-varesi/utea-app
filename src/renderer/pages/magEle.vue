@@ -1,8 +1,20 @@
-const {getData, getHeaders} = require("../js/databaseMag")
-var databaseMag = require ("../js/databaseMag").default
+<template>
+  <div class="q-pa-md">
+    <p v-if="error">Errore ({{errortext}}) : {{ databasePath }}</p>
+    <q-table
+      title="Componenti"
+      :data="componenti"
+      :columns="headers"
+      row-key="name" >
+    </q-table>
+  </div>
+</template>
 
+<script>
+  var databaseMag = require ("../js/databaseMag").default
 
-var MagEle = {
+export default {
+  name: 'magEle',
   data: function () {
     return {
       error: false,
@@ -34,17 +46,9 @@ var MagEle = {
     this.loadComponenti()
     // add sortable to headers
   },
-  template:
-  `
-  <div class="q-pa-md">
-    <p v-if="error">Errore ({{errortext}}) : {{ databasePath }}</p>
-    <q-table
-      title="Componenti"
-      :data="componenti"
-      :columns="headers"
-      row-key="name" >
-    </q-table>
-  </div>
-  `
 }
-exports.MagEle = MagEle
+</script>
+
+<style scoped>
+
+</style>

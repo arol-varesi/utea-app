@@ -9,7 +9,7 @@
     name: 'App',
     data: function () {
       return {
-        versions:{electron:process.versions.electron,electronWebpack:require('electron-webpack/package.json').version}
+        versions:{electron:process.versions.electron,electronWebpack:require('electron-webpack/package.json').version},
       }
     },
   }
