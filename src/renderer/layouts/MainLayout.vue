@@ -1,15 +1,18 @@
 <template>
-  <q-layout view="lHh Lpr lFf" style="height: 400px" class="shadow-2 rounded-borders">
+  <q-layout view="lHh Lpr lFf" class="rounded-borders">
     <q-header elevated>
-      <q-bar>
+      <!-- <q-bar style="-webkit-app-region: drag">
         <q-icon name="laptop_chromebook"></q-icon>
         <div>UTEA App</div>
 
         <q-space></q-space>
-        <q-btn dense flat icon="minimize"></q-btn>
-        <q-btn dense flat icon="crop_square"></q-btn>
-        <q-btn dense flat icon="close"></q-btn>
-      </q-bar>
+        <div style="-webkit-app-region: no-drag">
+          <q-btn dense flat icon="minimize" @click="minimize"><q-tooltip>riduci a icona</q-tooltip></q-btn>
+          <q-btn v-if="isMaximized" dense flat icon="far fa-window-restore" @click="unmaximize"><q-tooltip>dimensione normale</q-tooltip></q-btn>
+          <q-btn v-else dense flat icon="far fa-window-maximize" @click="maximize"><q-tooltip>schermo intero</q-tooltip></q-btn>
+          <q-btn dense flat icon="close" @click="close"><q-tooltip>chiudi</q-tooltip></q-btn>
+        </div>
+      </q-bar> -->
 
       <div class="q-pa-sm q-pl-md row items-center">
         <div class="q-mr-md cursor-pointer non-selectable">
@@ -62,10 +65,13 @@
     <q-page-container>
       <router-view />
     </q-page-container>
+
+    <q-footer></q-footer>
   </q-layout>
 </template>
 
 <script>
+const thisWindow = require('electron').remote.getCurrentWindow()
 import routes from '../router/routes'
 let pages = routes[0].children
 export default {
@@ -73,10 +79,26 @@ export default {
   data () {
     return {
       name: "layout",
-      pages: pages
+      pages: pages,
+      isMaximized: thisWindow.isFullScreen()
     }
+  },
+  methods: {
+     minimize: function () {
+       thisWindow.minimize()
+     },
+     maximize: function () {
+       thisWindow.setFullScreen(true)
+       this.isMaximized = thisWindow.isFullScreen()
+     },
+     unmaximize: function () {
+       thisWindow.setFullScreen(false)
+       this.isMaximized = thisWindow.isFullScreen()
+     },
+     close: function () {
+       thisWindow.close()
+     }
   }
-
 }
 </script>
 
