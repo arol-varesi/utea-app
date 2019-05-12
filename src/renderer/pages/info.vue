@@ -27,20 +27,22 @@
 
 <script>
 const {app, process} = require('electron').remote
+import  Vue  from 'vue'
 
 export default {
   name: 'Info', 
   data () {
     return {
       infos: [
-        {label: "appData Path", value: app.getPath('appData'), icon: "folder" },
-        {label: "appPath" , value: app.getAppPath(), icon: "folder"},
-        {label: "userData" , value: app.getPath('userData'), icon: "folder"},
-        {label: "appVersion", value: app.getVersion(), icon: "ion-logo-npm"},
-        {label: "appName", value: app.getName(), icon: "eva-shield-outline"},
+        {label: "Node.js version", value: process.version, icon: "ion-logo-nodejs"},
         {label: "Electron version", value: process.versions.electron, icon: "mdi-alert-circle-outline"},
         {label: "Chrome version", value: process.versions.chrome, icon: "fab fa-chrome"},
+        {label: "Vue version", value: Vue.version, icon: "ti-hand-point-up"},
         {label: "Quasar version", value: this.$q.version, icon: "ti-hand-point-up"},
+        {label: "appName", value: app.getName(), icon: "eva-shield-outline"},
+        {label: "appVersion", value: app.getVersion(), icon: "ion-logo-npm"},
+        {label: "appPath" , value: app.getAppPath(), icon: "folder"},
+        {label: "userData" , value: app.getPath('userData'), icon: "folder"},
       ]
     }
   }

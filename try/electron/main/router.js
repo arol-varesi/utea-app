@@ -33,7 +33,7 @@ function openWindow(window, htmlfile){
     window.focus();
     return;
   }
-  window = new BrowserWindow();
+  window = new BrowserWindow({webPreferences: {nodeIntegration: true} });
   // carica il file HTML
   window.loadURL(url.format({
     pathname: __appdirname + "/" + htmlfile,

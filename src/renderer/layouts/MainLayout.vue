@@ -73,7 +73,7 @@
 <script>
 const thisWindow = require('electron').remote.getCurrentWindow()
 import routes from '../router/routes'
-let pages = routes[0].children
+let pages = routes[1].children
 export default {
   name: 'MainLayout',
   data () {
