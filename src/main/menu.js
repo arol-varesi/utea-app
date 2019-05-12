@@ -1,5 +1,7 @@
 const { app, Menu } = require('electron')
 
+const windows = require('./windows')
+
 const isMac = (process.platform === 'darwin')
 
 const template = [
@@ -93,6 +95,10 @@ const template = [
       {
         label: 'Learn More',
         click () { require('electron').shell.openExternalSync('https://electronjs.org') }
+      },
+      {
+        label: 'Preferenze...',
+        click: () => windows.preferenze.init()
       }
     ]
   }

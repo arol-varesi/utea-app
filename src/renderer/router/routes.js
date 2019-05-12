@@ -7,6 +7,8 @@
  **/
 
 const routes = [
+  { path: '/preferenze',
+  component: () => import("../pages/preferenze.vue")},
   { path: '/',
     component: () => import('../layouts/MainLayout.vue'),
     children: [
@@ -25,9 +27,9 @@ const routes = [
       { menu: '?',
         name: 'Info',
         path: '/info', 
-        component: () => import("../pages/info.vue")}
+        component: () => import("../pages/info.vue")},
     ]
- }
+  }
 ]
 
 export default routes

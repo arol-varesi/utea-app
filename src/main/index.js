@@ -1,6 +1,6 @@
 'use strict'
 
-const { app, BrowserWindow, Menu, MenuItem } = require ('electron')
+const { app, BrowserWindow, Menu, ipcMain} = require ('electron')
 const url = require('url')
 const path = require('path')
 const Store = require('../common/store')
@@ -87,14 +87,8 @@ app.on('activate', () => {
 
 // create main BrowserWindow when electron is ready
 app.on('ready', () => {
-  // Configura alcune personalizzazionei dell'app di electron
   app.setName("UTEA App")
-  // let mainMenu = new Menu()
-  // mainMenu.append(new MenuItem({ label: 'MenuItem1', click() { console.log('item 1 clicked') } }))
-  // mainMenu.append(new MenuItem({ type: 'separator' }))
-  // mainMenu.append(new MenuItem({ label: 'MenuItem2', type: 'checkbox', checked: true }))
-  
-//  console.log(mainMenu)
   Menu.setApplicationMenu(mainMenu)
   mainWindow = createMainWindow()
 })
+
