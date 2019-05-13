@@ -1,25 +1,31 @@
 <template>
-  <div>
-    <header class="w3-container w3-blue">
-      <h1>Simboli</h1>
-    </header>
-    <div>
-      <table class="w3-table w3-bordered w3-margin-top">
-        <thead>
-          <th>Sigla</th>
-          <th>Descrizione</th>
-          <th> </th>
-        </thead>
-        <tbody>
-          <tr v-for="simbolo in simboli" :key="simbolo.id">
-            <td>{{simbolo.sigla}}</td>
-            <td>{{simbolo.descrizione.testo}}</td>
-            <td><i @click="editSimbolo($event)" class="far fa-edit" :sid="simbolo.id"></i></td>
-          </tr>
-        </tbody>
-      </table>
-      <button @click="newSimbolo()" class="w3-button w3-teal"><i class="far fa-plus-square"></i> Simbolo</button>
-    </div>
+  <div class="q-pa-md">
+    
+    <q-markup-table flat bordered>
+      <thead class="bg-blue">
+        <tr >
+          <th colspan="3">
+          <div class="q-mx-auto text-h4 text-white text-center">
+            Simboli
+          </div>
+          </th>
+        </tr>
+        <tr>
+          <th class="text-left">Sigla</th>
+          <th class="text-left">Descrizione</th>
+          <th class="text-center">Edit</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="simbolo in simboli" :key="simbolo.id">
+          <td>{{simbolo.sigla}}</td>
+          <td>{{simbolo.descrizione.testo}}</td>
+          <td class="text-center"><i @click="editSimbolo($event)" class="far fa-edit" :sid="simbolo.id"></i></td>
+        </tr>
+      </tbody>
+    </q-markup-table>
+    <q-btn color="primary" @click="newSimbolo()" icon="far fa-plus-square" label="Simbolo"></q-btn>
+    
 
     <!-- Form modale per inserimento -->
     <div id="idModal" class="w3-modal">
@@ -60,6 +66,8 @@ const { Descrizione } = require('../../../models/specifiche_db/entity/Descrizion
 
 const databasePath = "database.sqlite"
 
+const connection = null
+
 async function loadSimboli() {
   let simboli = await getConnection("default").getRepository("Simbolo").find();
   return simboli
@@ -95,13 +103,17 @@ export default {
 
   },
   created () {
-    getConnectionOptions("default").then(async connectionOptions => {
-      Object.assign(connectionOptions, {database: databasePath});
-      Object.assign(connectionOptions, {entities: [Simbolo, Descrizione]});
-      const connection = await createConnection(connectionOptions);
-    }).then( async () => {
-      this.simboli = await loadSimboli();
-    })
+    if (!connection) {
+      getConnectionOptions("default").then(async connectionOptions => {
+        Object.assign(connectionOptions, {database: databasePath});
+        Object.assign(connectionOptions, {entities: [Simbolo, Descrizione]});
+        const connection = await createConnection(connectionOptions);
+      }).then( async () => {
+        this.simboli = await loadSimboli();
+      })
+    } else {
+        (async () => {this.simboli = await loadSimboli()})()
+    }
   } 
 }
 

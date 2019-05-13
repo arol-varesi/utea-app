@@ -53,7 +53,7 @@
           ?
           <q-menu auto-close>
             <q-list dense>
-              <q-item clickable v-close-popup to='/info'>
+              <q-item clickable v-close-popup to='info'>
                 <q-item-section>Info</q-item-section>
               </q-item>
             </q-list>

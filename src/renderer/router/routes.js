@@ -14,19 +14,19 @@ const routes = [
     children: [
       { menu: 'Pagine',
         name: 'Componenti', 
-        path: '/mag', 
+        path: 'mag', 
         component: () => import('../pages/magEle.vue')},
       { menu: 'Pagine',
         name: 'TestQuasar', 
-        path: '/testquasar', 
+        path: 'testquasar', 
         component: () => import('../pages/testquasar.vue') },
       { menu: 'Pagine',
         name: 'Simboli',
-        path: '/simboli',  
+        path: 'simboli',  
         component: () => import('../pages/simboli.vue')},
       { menu: '?',
         name: 'Info',
-        path: '/info', 
+        path: 'info', 
         component: () => import("../pages/info.vue")},
     ]
   }
