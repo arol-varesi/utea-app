@@ -20,7 +20,7 @@
         <tr v-for="simbolo in simboli" :key="simbolo.id">
           <td>{{simbolo.sigla}}</td>
           <td>{{simbolo.descrizione.testo}}</td>
-          <td class="text-center"><i @click="editSimbolo($event)" class="far fa-edit" :sid="simbolo.id"></i></td>
+          <td class="text-center"><i @click="editSimbolo($event, simbolo.id)" class="far fa-edit" :sid="simbolo.id"></i></td>
         </tr>
       </tbody>
     </q-markup-table>
@@ -28,16 +28,46 @@
     
 
     <!-- Form modale per inserimento -->
-    <div id="idModal" class="w3-modal">
-      <div class="w3-modal-content w3-card-4 w3-animate-top">
-        <header class="w3-container w3-teal">
-          <span @click.prevent="btnCancel($event)"
-            class="w3-button w3-display-topright">&times;</span>
-          <h2 id="frmTitle" class="w3-center">Aggiungi Simbolo</h2>
-        </header>
+    <q-dialog 
+      v-model="editForm" 
+      transition-show="slide-down" 
+      transition-hide="slide-up">
+      <q-card class="formCard">
+        <q-card-section class="row items-center">
+          <q-toolbar class="bg-primary glossy text-white">
+            <q-toolbar-title id="frmTitle">{{formTitle}}</q-toolbar-title>
+            <q-btn flat round v-close-popup>&times;</q-btn>
+          </q-toolbar>
+          <q-space />
+        </q-card-section>
 
+        <q-separator />
+        <q-card-section>
+
+        <q-form
+          @submit="btnSave"
+          @reset="btnCancel"
+          class="q-gutter-md">
+
+          <input v-model="frmID" style="display: none" id="frmId">
+          <q-input
+            filled
+            v-model="frmSigla"
+            label="Sigla" />
+          
+          <q-input
+            filled
+            v-model="frmDescrizione"
+            label="Descrizione" />
+
+          <div class="row">
+            <q-btn label="Salva" type="submit" color="secondary"></q-btn>
+            <q-btn label="Reset" type="reset" color="secondary" flat class="q-ml-sm" ></q-btn>
+            <q-space />
+            <q-btn label="Elimina" @click.prevent="btnDelete($event)" color="negative"></q-btn>
+          </div>
+        </q-form>
         <form class="w3-container">
-          <input style="display: none" id="frmId">
           
           <label for="frmSigla">Sigla</label>
           <input type="text" id="frmSigla" class="w3-input">
@@ -49,11 +79,13 @@
           <div class="w3-section w3-margin">
             <button @click.prevent="btnSave($event)" class="w3-btn w3-blue-gray">Salva</button>
             <button @click.prevent="btnCancel($event)" class="w3-btn w3-gray">Annulla</button>
-            <button @click.prevent="btnDelete($event)" id="btnDelete" class="w3-btn w3-red w3-right">Elimina</button>
+           
+            <button v-show="frmEnableDelete"  @click.prevent="btnDelete($event)" id="btnDelete" class="w3-btn w3-red w3-right">Elimina</button>
           </div>
         </div>
-      </div>
-    </div>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -77,27 +109,50 @@ export default {
   data () {
     return {
       simboli: [],
+      editForm: false,
+      formTitle: "",
+      frmID: null,
+      frmSigla: null,
+      frmDescrizione: null,
+      frmEnableDelete: false,
     }
   },
   methods: {
-    editSimbolo: function (event) {
-      let idSimbolo = event.target.getAttribute('sid')
+    editSimbolo: async function (event, idSimbolo) {
+      //let idSimbolo = event.target.getAttribute('sid')
       this.$q.notify('Edit Simbolo:' + idSimbolo)
-      editSimbolo(idSimbolo)
+      let simb = await Simbolo.findOne({id: idSimbolo})
+      this.frmID = simb.id
+      this.frmSigla = simb.sigla
+      this.frmDescrizione = simb.descrizione.testo
+      //editSimbolo(idSimbolo)
+      this.formTitle = "Modifica Simbolo"
+      this.frmEnableDelete = true
+      this.editForm = true
     },
     newSimbolo: async function (event) {
+      this.frmID = null
+      this.frmSigla = null
+      this.frmDescrizione = null
       newSimbolo()
+      this.formTitle = "Aggiungi Simbolo"
+      this.frmEnableDelete = false
+      this.editForm = true
       this.simboli = await loadSimboli()
     },
     btnCancel: function (event) {
-      document.getElementById('idModal').style.display='none';
+      
+      this.editForm = false
+      //document.getElementById('idModal').style.display='none';
     },
     btnSave: async function (event) {
       btnSave(event)
+      this.editForm = false
       this.simboli = await loadSimboli()
     },
     btnDelete: async function (event) {
       btnDelete(event)
+      this.editForm = false
       this.simboli = await loadSimboli()
     }
 
@@ -146,7 +201,7 @@ async function btnSave(event) {
   simb.sigla = sigla;
   simb.descrizione = desc;
   await getConnection().manager.save(simb);
-  document.getElementById('idModal').style.display='none';
+  // document.getElementById('idModal').style.display='none';
 
   // this.simboli = await loadSimboli();
 }
@@ -163,7 +218,7 @@ async function btnDelete(event) {
     await getConnection().manager.remove(simb);
     await getConnection().manager.remove(desc);
   }
-  document.getElementById('idModal').style.display='none';
+  // document.getElementById('idModal').style.display='none';
 
   // VueApp.simboli = await loadSimboli();
 
@@ -183,7 +238,7 @@ async function editSimbolo(simboloID) {
   // visualizza pulsante "Elimina"
   document.getElementById('btnDelete').style.display='block';
   // attiva visualizzazione form
-  document.getElementById('idModal').style.display='block';
+  //document.getElementById('idModal').style.display='block';
 }
 
 async function newSimbolo() {
@@ -195,10 +250,14 @@ async function newSimbolo() {
   // nascondi pulsante "Elimina"
   document.getElementById('btnDelete').style.display='none';
   // attiva visualizzazione form
-  document.getElementById('idModal').style.display='block';
+  //document.getElementById('idModal').style.display='block';
 }
 </script>
 
 <style scoped>
-@import "../css/w3.css"
+@import "../css/w3.css";
+.formCard {
+  width: 100%;
+  max-width: 600px;
+}
 </style>
