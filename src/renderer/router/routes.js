@@ -23,7 +23,7 @@ const routes = [
       { menu: 'Pagine',
         name: 'Simboli',
         path: '/simboli',  
-        component: () => import('../pages/prova.vue')},
+        component: () => import('../pages/simboli.vue')},
       { menu: '?',
         name: 'Info',
         path: '/info', 

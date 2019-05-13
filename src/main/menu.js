@@ -24,14 +24,12 @@ const template = [
   {
     label: 'File',
     submenu: [
-      isMac ? { role: 'close' } : {},
-      { type: 'separator'},
-      { role: 'quit'}
+      isMac ? { role: 'close' } : { role: 'quit'}     
     ]
   },
   // { role: 'editMenu' }
   {
-    label: 'Editaggio',
+    label: 'Edit',
     submenu: [
       { role: 'undo' },
       { role: 'redo' },

@@ -66,6 +66,7 @@
       "compile": "electron-webpack",
       "dist": "yarn compile && electron-builder",
       "dist:dir": "yarn dist -- --dir -c.compression=store -c.mac.identity=null",
+      "compile:db": "tsc --build models/tsconfig.json",
       "try:electron": "tsc --build models/tsconfig.json && electron try/electron/main/main.js",
       "try:spa": "tsc --build models/tsconfig.json && electron try/electron/main/router.js",
       "try:csv": "electron try/csv/csvMain.js",
