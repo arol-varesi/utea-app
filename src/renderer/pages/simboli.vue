@@ -46,14 +46,14 @@
 
         <q-form
           @submit="btnSave"
-          @reset="btnCancel"
           class="q-gutter-md">
 
           <input v-model="frmID" style="display: none" id="frmId">
           <q-input
             filled
             v-model="frmSigla"
-            label="Sigla" />
+            label="Sigla"
+            :rules="[val => validaSigla()]" />
           
           <q-input
             filled
@@ -62,27 +62,11 @@
 
           <div class="row">
             <q-btn label="Salva" type="submit" color="secondary"></q-btn>
-            <q-btn label="Reset" type="reset" color="secondary" flat class="q-ml-sm" ></q-btn>
+            <q-btn v-if="isEditingMode" label="Undo" @click="btnUndo()" color="secondary" flat class="q-ml-sm" ></q-btn>
             <q-space />
-            <q-btn label="Elimina" @click.prevent="btnDelete($event)" color="negative"></q-btn>
+            <q-btn v-if="isEditingMode" label="Elimina" @click.prevent="btnDelete($event)" color="negative"></q-btn>
           </div>
         </q-form>
-        <form class="w3-container">
-          
-          <label for="frmSigla">Sigla</label>
-          <input type="text" id="frmSigla" class="w3-input">
-
-          <label for="frmDescrizione">Descrizione</label>
-          <input type="text" id="frmDescrizione" class="w3-input">
-        </form>
-        <div class="w3-container">
-          <div class="w3-section w3-margin">
-            <button @click.prevent="btnSave($event)" class="w3-btn w3-blue-gray">Salva</button>
-            <button @click.prevent="btnCancel($event)" class="w3-btn w3-gray">Annulla</button>
-           
-            <button v-show="frmEnableDelete"  @click.prevent="btnDelete($event)" id="btnDelete" class="w3-btn w3-red w3-right">Elimina</button>
-          </div>
-        </div>
         </q-card-section>
       </q-card>
     </q-dialog>
@@ -114,7 +98,7 @@ export default {
       frmID: null,
       frmSigla: null,
       frmDescrizione: null,
-      frmEnableDelete: false,
+      isEditingMode: false,
     }
   },
   methods: {
@@ -125,35 +109,64 @@ export default {
       this.frmID = simb.id
       this.frmSigla = simb.sigla
       this.frmDescrizione = simb.descrizione.testo
-      //editSimbolo(idSimbolo)
       this.formTitle = "Modifica Simbolo"
-      this.frmEnableDelete = true
+      this.isEditingMode = true
       this.editForm = true
     },
     newSimbolo: async function (event) {
       this.frmID = null
       this.frmSigla = null
       this.frmDescrizione = null
-      newSimbolo()
       this.formTitle = "Aggiungi Simbolo"
-      this.frmEnableDelete = false
+      this.isEditingMode = false
       this.editForm = true
-      this.simboli = await loadSimboli()
+      this.simboli = await Simbolo.find()
     },
     btnCancel: function (event) {
-      
       this.editForm = false
-      //document.getElementById('idModal').style.display='none';
     },
     btnSave: async function (event) {
-      btnSave(event)
+      // Check for correctness of values
+      let simb = (this.frmID === null) ? new Simbolo : await Simbolo.findOne({id: this.frmID})
+      let desc = (this.frmID === null) ? new Descrizione : simb.descrizione
+      desc.testo = this.frmDescrizione
+      await desc.save()
+      simb.sigla = this.frmSigla
+      simb.descrizione = desc
+      await simb.save()
       this.editForm = false
-      this.simboli = await loadSimboli()
+      this.simboli = await Simbolo.find()
     },
-    btnDelete: async function (event) {
-      btnDelete(event)
+    btnDelete: async function (event) {      
+      if (this.frmID !== null){
+        this.$q.notify('Elimino Simbolo:' + this.frmID)
+        let simb = await Simbolo.findOne({id: this.frmID})
+        let desc = simb.descrizione
+        alert("Elimino dal database : "+ simb.id + ": " + simb.sigla + " ?")
+        await simb.remove()
+        await desc.remove()
+      }
       this.editForm = false
-      this.simboli = await loadSimboli()
+      this.simboli = await Simbolo.find()
+    },
+    btnUndo: async function () {
+      let simb = await Simbolo.findOne({id: this.frmID})
+      this.frmSigla = simb.sigla
+      this.frmDescrizione = simb.descrizione.testo
+    },
+    validaSigla: async function () {
+      if (this.frmSigla){
+        let stessaSigla = await Simbolo.findOne({sigla: this.frmSigla})
+        if (!stessaSigla) {
+          return true
+        } else if (stessaSigla.id != this.frmID) {
+          return 'Sigla già presente!'
+        } else {
+          return true
+        }
+      } else { 
+        return 'Campo obbligatorio!'
+      }
     }
 
   },
@@ -164,98 +177,17 @@ export default {
         Object.assign(connectionOptions, {entities: [Simbolo, Descrizione]});
         const connection = await createConnection(connectionOptions);
       }).then( async () => {
-        this.simboli = await loadSimboli();
+        this.simboli = await Simbolo.find();
       })
     } else {
-        (async () => {this.simboli = await loadSimboli()})()
+        (async () => {this.simboli = await Simbolo.find()})()
     }
   } 
 }
 
-// -------------------------------------
-// Crea la connessione verso il database
-// getConnectionOptions("default").then(async connectionOptions => {
-//   Object.assign(connectionOptions, {database: databasePath});
-//   const connection = await createConnection(connectionOptions);
-// }).then( async () => {
-//   VueApp.simboli = await loadSimboli();
-// })
-// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-async function btnSave(event) {
-  // legge i valori del form
-  //event.preventDefault();
-  let simboloID = document.getElementById('frmId').value;  
-  let sigla = document.getElementById('frmSigla').value;
-  let descrizione = document.getElementById('frmDescrizione').value;
-  let simb, desc
-  if(simboloID == "new") {
-    desc = new Descrizione();
-    simb = new Simbolo();
-  } else {
-    simb = await Simbolo.findOne({id: simboloID});
-    desc = simb.descrizione;
-  }
-  desc.testo = descrizione;
-  await getConnection().manager.save(desc);
-  simb.sigla = sigla;
-  simb.descrizione = desc;
-  await getConnection().manager.save(simb);
-  // document.getElementById('idModal').style.display='none';
-
-  // this.simboli = await loadSimboli();
-}
-
-
-async function btnDelete(event) {
-  let simboloID = document.getElementById('frmId').value;  
-  let sigla = document.getElementById('frmSigla').value;
-  let descrizione = document.getElementById('frmDescrizione').value;
-  if(simboloID != "new") {
-    let simb = await Simbolo.findOne({id: simboloID});
-    let desc = simb.descrizione;
-    alert("removing: " + simb.sigla );
-    await getConnection().manager.remove(simb);
-    await getConnection().manager.remove(desc);
-  }
-  // document.getElementById('idModal').style.display='none';
-
-  // VueApp.simboli = await loadSimboli();
-
-}
-
-
-async function editSimbolo(simboloID) {
-  console.log("editSimbol: " + simboloID)
-  let simb = await Simbolo.findOne({id: simboloID})
-  // let simb = await getConnection("default").getRepository(Simbolo).findOne({id: simboloID})
-  //desc = simb.descrizione;
-  document.getElementById('frmTitle').innerHTML = "Modifica Simbolo";
-  document.getElementById('frmId').value = simboloID;
-  document.getElementById('frmSigla').value = simb.sigla;
-  document.getElementById('frmDescrizione').value = simb.descrizione.testo;
-
-  // visualizza pulsante "Elimina"
-  document.getElementById('btnDelete').style.display='block';
-  // attiva visualizzazione form
-  //document.getElementById('idModal').style.display='block';
-}
-
-async function newSimbolo() {
-  document.getElementById('frmTitle').innerHTML = "Aggiungi Simbolo";
-  document.getElementById('frmId').value = "new";
-  document.getElementById('frmSigla').value = "";
-  document.getElementById('frmDescrizione').value = "";
-  
-  // nascondi pulsante "Elimina"
-  document.getElementById('btnDelete').style.display='none';
-  // attiva visualizzazione form
-  //document.getElementById('idModal').style.display='block';
-}
 </script>
 
 <style scoped>
-@import "../css/w3.css";
 .formCard {
   width: 100%;
   max-width: 600px;
