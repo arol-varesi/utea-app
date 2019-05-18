@@ -1,29 +1,54 @@
 <template>
   <div class="q-pa-md">    
-    <q-markup-table flat bordered>
-      <thead class="bg-blue">
-        <tr >
-          <th colspan="3">
-          <div class="q-mx-auto text-h4 text-white text-center">
-            Simboli
-          </div>
-          </th>
-        </tr>
-        <tr>
-          <th class="text-left">Sigla</th>
-          <th class="text-left">Descrizione</th>
-          <th class="text-center">Edit</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="simbolo in simboli" :key="simbolo.id">
-          <td>{{simbolo.sigla}}</td>
-          <td>{{simbolo.descrizione.testo}}</td>
-          <td class="text-center"><i @click="editSimbolo($event, simbolo.id)" class="far fa-edit" :sid="simbolo.id"></i></td>
-        </tr>
-      </tbody>
-    </q-markup-table>
-    <q-btn color="primary" @click="newSimbolo()" icon="far fa-plus-square" label="Simbolo"></q-btn>
+    <q-table class="my-table-header" dense
+      title="Simboli"
+      :data="simboli"
+      :columns="columns"
+      :filter="filter"
+      row-key="id"
+      selection= "single"
+      :selected.sync="selected"      
+      :loading="loading"
+      no-results-label="La ricerca non ha prodotto risultati"
+      rows-per-page-label="Simboli per pagina"
+      @selection="editSelected"
+      >
+
+        <!-- Personalizzazione della linea superiore 'top' -->
+        <template v-slot:top="props">
+        <div class="q-table__title q-mr-xl">Simboli</div>
+        <q-input _borderless dense class="q-ml-md" debounce="300" v-model="filter">
+          <template v-slot:prepend>
+            <q-icon name="search" />
+          </template>
+        </q-input>
+        <q-space />
+        <q-btn _flat dense _color="primary" class="q-ml-md" 
+          _icon="far fa-plus-square" 
+          label="Aggiungi Simbolo" no-caps
+
+          :disable="loading" 
+          @click="newSimbolo()" 
+          ></q-btn>
+        <q-btn flat round dense class="q-ml-md"
+          :icon="props.inFullscreen ? 'fullscreen_exit' : 'fullscreen'"
+          @click="props.toggleFullscreen"></q-btn>
+        </template>
+
+        <!-- Personalizzazione del corpo tabella : Selezione premendo la sigla-->
+        <template v-slot:body="props" >
+            <q-tr :props="props">
+              <template >
+                <q-td auto-width>
+                  <q-btn size="xs" dense flat icon="edit" @click="props.selected = false"></q-btn>
+                </q-td>
+                <q-td key="sigla" :props="props" >{{ props.row.sigla }}</q-td>
+                <q-td key="descrizione" :props="props">{{ props.row.descrizione.testo }}</q-td>
+              </template>
+            </q-tr>
+        </template>
+
+    </q-table>
     
     <!-- Form inserimento tramite l'usp del componente 'formSimbolo' -->
     <q-dialog v-model="editForm" 
@@ -63,9 +88,15 @@ export default {
   data () {
     return {
       simboli: [],
+      selected: [],
+      loading: true,
+      filter: '',
       editForm: false,
-      editFormOld: false,
       selectedSimbolo: null,
+      columns: [
+        { name: 'sigla', label: 'Sigla', field: row => row.sigla, align: 'left', sortable: true , style: "width: 60px"},
+        { name: 'descrizione', label: 'Descrizione', field: row => row.descrizione.testo, align: 'left', sortable: false},
+      ]
     }
   },
   components: {
@@ -84,11 +115,18 @@ export default {
       this.editForm = false
     },
     updateTable: async function () {
+      this.loading = true
       this.simboli = await Simbolo.find()
+      this.loading = false
+    },
+    editSelected: function(props) {
+      this.selectedSimbolo = props.rows[0].id
+      this.editForm = true
+//      this.$q.notify("selezionata" + props.rows[0].sigla)
     }
   },
   created () {
-    if (!connection) {
+    if (connection == null) {
       getConnectionOptions("default").then(async connectionOptions => {
         Object.assign(connectionOptions, {database: databasePath});
         Object.assign(connectionOptions, {entities: [Simbolo, Descrizione]});
@@ -104,9 +142,33 @@ export default {
 
 </script>
 
-<style scoped>
+<style>
 .formCard {
   width: 100%;
   max-width: 600px;
+} 
+
+.my-table-header .q-table__middle {
+    max-height: 800px;
+} 
+
+/* Colore di sfondo di Header e Footer  */
+.my-table-header .q-table__top,
+.my-table-header .q-table__bottom,
+.my-table-header thead tr:first-child th {
+    background-color: #3cc3f8;
 }
+
+/* Colore di sfondo della prima colonna */
+.my-table-header td:first-child,
+.my-table-header td:first-child + td {
+  background-color: #d0d0d0;
+}
+
+.my-table-header thead tr:first-child th {
+    position: sticky;
+    top: 0;
+    opacity: 1;
+    z-index: 1;
+} 
 </style>
