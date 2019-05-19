@@ -6,18 +6,22 @@
       :columns="columns"
       :filter="filter"
       row-key="id"
+      :pagination.sync= "myPagination"
       selection= "single"
       :selected.sync="selected"      
       :loading="loading"
       no-results-label="La ricerca non ha prodotto risultati"
       rows-per-page-label="Simboli per pagina"
-      @selection="editSelected"
+      @selection="editSimbolo"
       >
 
-        <!-- Personalizzazione della linea superiore 'top' -->
-        <template v-slot:top="props">
-        <div class="q-table__title q-mr-xl">Simboli</div>
-        <q-input _borderless dense class="q-ml-md" debounce="300" v-model="filter">
+        <!-- Personalizzazione dello slot superiore 'top'
+             - aggiunta di campo ricerca
+             - aggiunto pulsante 'aggiungi simbolo'
+             - aggionta pulsante 'fullscreen'  -->
+        <template v-slot:top="props" class="row">
+        <div class="q-table__title q-mr-md col-auto">Simboli</div>
+        <q-input _borderless dense class="col" debounce="300" v-model="filter">
           <template v-slot:prepend>
             <q-icon name="search" />
           </template>
@@ -35,22 +39,25 @@
           @click="props.toggleFullscreen"></q-btn>
         </template>
 
-        <!-- Personalizzazione del corpo tabella : Selezione premendo la sigla-->
+        <!-- Personalizzazione dello slot 'body' per personalizzare la gestione
+             della editing della riga, aggiunta selezione sotto forma di icona 
+             'edit' e forzatura deselezione della linea che comunque genera
+             comunque l'evento 'selection' che opportunamente intercettato
+             attiva form di editing -->
         <template v-slot:body="props" >
             <q-tr :props="props">
               <template >
                 <q-td auto-width>
-                  <q-btn size="xs" dense flat icon="edit" @click="props.selected = false"></q-btn>
+                  <q-btn cursor-pointer size="xs" dense flat icon="edit" @click="props.selected = false"></q-btn>
                 </q-td>
                 <q-td key="sigla" :props="props" >{{ props.row.sigla }}</q-td>
                 <q-td key="descrizione" :props="props">{{ props.row.descrizione.testo }}</q-td>
               </template>
             </q-tr>
         </template>
-
     </q-table>
     
-    <!-- Form inserimento tramite l'usp del componente 'formSimbolo' -->
+    <!-- Form inserimento tramite l'uso del componente 'formSimbolo' -->
     <q-dialog v-model="editForm" 
       transition-show = "slide-down" 
       transition-hide = "slide-up">
@@ -96,15 +103,18 @@ export default {
       columns: [
         { name: 'sigla', label: 'Sigla', field: row => row.sigla, align: 'left', sortable: true , style: "width: 60px"},
         { name: 'descrizione', label: 'Descrizione', field: row => row.descrizione.testo, align: 'left', sortable: false},
-      ]
+      ],
+      myPagination: {
+        rowsPerPage: 20
+      }
     }
   },
   components: {
     formSimbolo,
   },
   methods: {
-    editSimbolo: async function (event, idSimbolo) {
-      this.selectedSimbolo = idSimbolo
+    editSimbolo: function(props) {
+      this.selectedSimbolo = props.rows[0].id
       this.editForm = true
     },
     newSimbolo: async function (event) {
@@ -119,11 +129,6 @@ export default {
       this.simboli = await Simbolo.find()
       this.loading = false
     },
-    editSelected: function(props) {
-      this.selectedSimbolo = props.rows[0].id
-      this.editForm = true
-//      this.$q.notify("selezionata" + props.rows[0].sigla)
-    }
   },
   created () {
     if (connection == null) {
