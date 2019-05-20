@@ -6,12 +6,13 @@
       :columns="columns"
       :filter="filter"
       row-key="id"
-      :pagination.sync= "myPagination"
       selection= "single"
       :selected.sync="selected"      
       :loading="loading"
       no-results-label="La ricerca non ha prodotto risultati"
       rows-per-page-label="Simboli per pagina"
+      :rows-per-page-options="[20,50,0]"
+      :pagination.sync= "myPagination"
       @selection="editSimbolo"
       >
 
@@ -80,8 +81,9 @@ import formSimbolo from '../components/formSimbolo.vue'
 
 const { createConnection, getRepository, getConnection, getConnectionOptions} = require('typeorm')
 const { Simbolo } = require('../../../models/specifiche_db/entity/Simbolo');
-const { Descrizione } = require('../../../models/specifiche_db/entity/Descrizione');
-
+const { DescSimbolo } = require('../../../models/specifiche_db/entity/DescSimbolo');
+const { TradSimbolo } = require('../../../models/specifiche_db/entity/TradSimbolo')
+const { Lingua } = require('../../../models/specifiche_db/entity/Lingua')
 const databasePath = "database.sqlite"
 
 var connection = null
@@ -134,7 +136,7 @@ export default {
     if (connection == null) {
       getConnectionOptions("default").then(async connectionOptions => {
         Object.assign(connectionOptions, {database: databasePath});
-        Object.assign(connectionOptions, {entities: [Simbolo, Descrizione]});
+        Object.assign(connectionOptions, {entities: [Simbolo, DescSimbolo, TradSimbolo, Lingua]});
         connection = await createConnection(connectionOptions);
       }).then(() => {
         this.updateTable()

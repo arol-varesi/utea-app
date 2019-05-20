@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, JoinTable, BaseEntity} from "typeorm";
-import {Descrizione} from "./Descrizione";
+import {DescSimbolo} from "./DescSimbolo";
 
 
 @Entity()
@@ -10,10 +10,8 @@ export class Simbolo extends BaseEntity{
   @Column()
   sigla : string;
 
-  @OneToOne( type => Descrizione , {
-    eager: true
-  })
+  @OneToOne( type => DescSimbolo , { eager: true })
   @JoinColumn()
-  descrizione : Descrizione;
+  descrizione : DescSimbolo;
 
 }

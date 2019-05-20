@@ -52,7 +52,7 @@
 
 <script>
 const { Simbolo } = require('../../../models/specifiche_db/entity/Simbolo') 
-const { Descrizione } = require('../../../models/specifiche_db/entity/Descrizione');
+const { DescSimbolo } = require('../../../models/specifiche_db/entity/DescSimbolo');
 
 
 export default {
@@ -84,7 +84,7 @@ export default {
     btnSave: async function (event) {
             // Check for correctness of values
       let simb = (this.frmID === null) ? new Simbolo : await Simbolo.findOne({id: this.frmID})
-      let desc = (this.frmID === null) ? new Descrizione : simb.descrizione
+      let desc = (this.frmID === null) ? new DescSimbolo : simb.descrizione
       desc.testo = this.frmDescrizione
       await desc.save()
       simb.descrizione = desc
