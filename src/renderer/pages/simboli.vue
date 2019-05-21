@@ -86,6 +86,8 @@ const { TradSimbolo } = require('../../../models/specifiche_db/entity/TradSimbol
 const { Lingua } = require('../../../models/specifiche_db/entity/Lingua')
 const databasePath = "database.sqlite"
 
+// const { dbSpecifiche, Simbolo, DescSimbolo, TradSimbolo, Lingua, connectDB } = require('../js/dbSpecifiche')
+
 var connection = null
 
 async function loadSimboli() {
@@ -129,10 +131,14 @@ export default {
     updateTable: async function () {
       this.loading = true
       this.simboli = await Simbolo.find()
+      // this.simboli = await dbSpecifiche.simboli
       this.loading = false
     },
   },
-  created () {
+  created: async function () {
+    // await connectDB()
+    // alert("Connessione: " + dbSpecifiche.isConnected)
+    // this.updateTable()
     if (connection == null) {
       getConnectionOptions("default").then(async connectionOptions => {
         Object.assign(connectionOptions, {database: databasePath});

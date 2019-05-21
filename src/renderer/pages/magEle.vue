@@ -11,7 +11,7 @@
 </template>
 
 <script>
-  var databaseMag = require ("../js/databaseMag").default
+  var databaseMag = require ("../js/dbMagazzino").default
 
 export default {
   name: 'magEle',
