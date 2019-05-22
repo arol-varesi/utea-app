@@ -2,10 +2,24 @@
   <div class="q-pa-md">
     <p v-if="error">Errore ({{errortext}}) : {{ databasePath }}</p>
     <q-table
+      dense
       title="Componenti"
       :data="componenti"
       :columns="headers"
+      :filter="filter"
       row-key="name" >
+        <!-- Personalizzazione dello slot superiore 'top'
+             - aggiunta di campo ricerca -->
+        <template v-slot:top="props" class="row">
+        <div class="q-table__title q-mr-md col-auto">Componenti</div>
+        <q-input _borderless dense class="col" debounce="300" v-model="filter">
+          <template v-slot:prepend>
+            <q-icon name="search" />
+          </template>
+        </q-input>
+        </template>
+
+
     </q-table>
   </div>
 </template>
@@ -28,6 +42,7 @@ export default {
       bar: false,
       bar2: false,
       toolbar: false,
+      filter: '',
     }
   },
   methods: {
