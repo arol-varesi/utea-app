@@ -35,21 +35,18 @@
             </q-list>
           </q-menu>
         </div>
-        <!-- Il seguente menu viene creato automaticamente a partire da quanto definito in routes -->
-        <div class="q-mr-md cursor-pointer non-selectable">
-          Pagine 
-          <q-menu>
-            <q-list dense style="min-width: 100px">
-              <div v-for="pagina in pages" :key='pagina.index'>
-                <q-item dense v-if='pagina.menu === "Pagine"' clickable v-close-popup :to='pagina.path' >
-                  <q-item-section>{{pagina.name}}</q-item-section>
-               </q-item> 
-              </div>
-           </q-list>
-          </q-menu>
-        </div>
+        <!-- I seguenti menu vengono creati automaticamente a partire da quanto definito in routes -->
+        <menu-list
+          menuName="Pagine">
+        </menu-list>       
+        <menu-list
+          menuName="Sistema">
+        </menu-list>       
         <q-space></q-space>
-        <div class="q-ml-md cursor-pointer non-selectable">
+        <menu-list
+          menuName="?">
+        </menu-list> 
+        <!-- <div class="q-ml-md cursor-pointer non-selectable">
           ?
           <q-menu auto-close>
             <q-list dense>
@@ -58,7 +55,7 @@
               </q-item>
             </q-list>
           </q-menu>
-        </div>
+        </div> -->
       </div>
     </q-header>
 
@@ -73,6 +70,7 @@
 <script>
 const thisWindow = require('electron').remote.getCurrentWindow()
 import routes from '../router/routes'
+import menuList from '../components/menuList.vue'
 let pages = routes[1].children
 export default {
   name: 'MainLayout',
@@ -82,6 +80,9 @@ export default {
       pages: pages,
       isMaximized: thisWindow.isFullScreen()
     }
+  },
+  components: {
+    menuList,
   },
   methods: {
      minimize: function () {

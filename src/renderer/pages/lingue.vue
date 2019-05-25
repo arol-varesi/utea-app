@@ -1,8 +1,8 @@
 <template>
   <div class="q-pa-md">    
     <q-table class="my-table-header" dense
-      title="Simboli"
-      :data="simboli"
+      title="Lingue"
+      :data="lingue"
       :columns="columns"
       :filter="filter"
       row-key="id"
@@ -13,7 +13,7 @@
       rows-per-page-label="Simboli per pagina"
       :rows-per-page-options="[20,50,0]"
       :pagination.sync= "myPagination"
-      @selection="editSimbolo"
+      @selection="editLingua"
       >
 
         <!-- Personalizzazione dello slot superiore 'top'
@@ -30,16 +30,12 @@
         <q-space />
         <q-btn _flat dense _color="primary" class="q-ml-md" 
           _icon="far fa-plus-square" 
-          label="Aggiungi Simbolo" no-caps
+          label="Aggiungi Lingua" no-caps
 
           :disable="loading" 
-          @click="newSimbolo()" 
+          @click="newLingua()" 
           ></q-btn>
-        <q-btn flat round dense class="q-ml-md"
-          :icon="props.inFullscreen ? 'fullscreen_exit' : 'fullscreen'"
-          @click="props.toggleFullscreen"></q-btn>
         </template>
-
         <!-- Personalizzazione dello slot 'body' per personalizzare la gestione
              della editing della riga, aggiunta selezione sotto forma di icona 
              'edit' e forzatura deselezione della linea che comunque genera
@@ -52,78 +48,65 @@
                   <q-btn cursor-pointer size="xs" dense flat icon="edit" @click="props.selected = false"></q-btn>
                 </q-td>
                 <q-td key="sigla" :props="props" >{{ props.row.sigla }}</q-td>
-                <q-td key="descrizione" :props="props">{{ props.row.descrizione.testo }}</q-td>
+                <q-td key="nomeIta" :props="props">{{ props.row.nomeIta }}</q-td>
+                <q-td key="nome" :props="props">{{ props.row.nome }}</q-td>
               </template>
             </q-tr>
         </template>
     </q-table>
     
-    <!-- Form inserimento tramite l'uso del componente 'formSimbolo' -->
+    <!-- Form inserimento tramite l'uso del componente 'formLingua' -->
     <q-dialog v-model="editForm" 
       transition-show = "slide-down" 
       transition-hide = "slide-up">
       <!-- Forza la creazione del componente con l'uso del v-if 
         --  così viene ricreata da nuovo e elimita le latenze
         --  dovute ai tempi di aggiornamento del parametro simboloID -->
-      <form-simbolo
+      <form-lingua
           v-if="editForm"
-          :simboloID = "selectedSimbolo" 
+          :linguaID = "selectedLingua" 
           @save = "editForm = false; updateTable()"
           @delete = "editForm = false; updateTable()">
-      </form-simbolo>  
+      </form-lingua>  
     </q-dialog>
   </div>
 </template>
 
 
 <script>
-import formSimbolo from '../components/formSimbolo.vue'
+import formLingua from '../components/formLingua.vue'
 
-//const { createConnection, getRepository, getConnection, getConnectionOptions} = require('typeorm')
-// const { Simbolo } = require('../../../models/specifiche_db/entity/Simbolo');
-// const { DescSimbolo } = require('../../../models/specifiche_db/entity/DescSimbolo');
-const { TradSimbolo } = require('../../../models/specifiche_db/entity/TradSimbolo')
-const { Lingua } = require('../../../models/specifiche_db/entity/Lingua')
-const databasePath = "database.sqlite"
-
-const { Simbolo, DescSimbolo, connectDB } = require('../js/dbSpecifiche')
-// const { dbSpecifiche, Simbolo, DescSimbolo, TradSimbolo, Lingua, connectDB } = require('../js/dbSpecifiche')
-
-// var connection = null
-
-// async function loadSimboli() {
-//   let simboli = await getConnection("default").getRepository("Simbolo").find();
-//   return simboli
-// }
+const { Lingua, connectDB } = require('../js/dbSpecifiche')
 
 export default {
   data () {
     return {
-      simboli: [],
+      lingue: [],
       selected: [],
       loading: true,
       filter: '',
       editForm: false,
-      selectedSimbolo: null,
+      selectedLingua: null,
       columns: [
-        { name: 'sigla', label: 'Sigla', field: row => row.sigla, align: 'left', sortable: true , style: "width: 60px"},
-        { name: 'descrizione', label: 'Descrizione', field: row => row.descrizione.testo, align: 'left', sortable: false},
+        { name: 'sigla', label: 'Lingua', field: row => row.sigla, align: 'left', sortable: true , style: "width: 60px"},
+        { name: 'nomeIta', label: 'Nome (italiano)', field: row => row.nomeIta, align: 'left', sortable: false},
+        { name: 'nome', label: 'Nome (in lingua)', field: row => row.nome, align: 'left', sortable: false},
       ],
       myPagination: {
-        rowsPerPage: 20
+        rowsPerPage: 0
       }
     }
   },
   components: {
-    formSimbolo,
+    formLingua,
   },
   methods: {
-    editSimbolo: function(props) {
-      this.selectedSimbolo = props.rows[0].id
+    editLingua: function(props) {
+      this.selectedLingua = props.rows[0].id
       this.editForm = true
     },
-    newSimbolo: async function (event) {
-      this.selectedSimbolo = -1
+    newLingua: async function (event) {
+      this.selectedLingua = -1
       this.editForm = true
     },
     btnCancel: function (event) {
@@ -131,8 +114,7 @@ export default {
     },
     updateTable: async function () {
       this.loading = true
-      this.simboli = await Simbolo.find()
-      // this.simboli = await dbSpecifiche.simboli
+      this.lingue = await Lingua.find()
       this.loading = false
     },
   },

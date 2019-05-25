@@ -24,6 +24,10 @@ const routes = [
         name: 'Simboli',
         path: 'simboli',  
         component: () => import('../pages/simboli.vue')},
+      { menu: 'Sistema',
+        name: 'Lingue',
+        path: 'lingue',  
+        component: () => import('../pages/lingue.vue')},
       { menu: '?',
         name: 'Info',
         path: 'info', 
@@ -33,21 +37,3 @@ const routes = [
 ]
 
 export default routes
-
-
-// const pages = [
-//   { name: 'Componenti', 
-//     path: '/mag', 
-//     component: () => import('../pages/magEle.vue')},
-//   { name: 'TestQuasar', 
-//     path: '/testquasar', 
-//     component: () => import('../pages/testquasar.vue')},
-//   { name: 'Simboli', 
-//     path: '/simboli', 
-//     component: () => import('../pages/prova.vue')},
-//   { name: 'Info', 
-//     path: '/info', 
-//     component: () => import('../pages/info.vue')},
-// ]
-
-// export default pages
