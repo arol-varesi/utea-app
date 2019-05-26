@@ -22,7 +22,11 @@
         v-model="frmLingua"
         label="Lingua"
         mask="AAA"
-        :rules="[val => validaLingua()]" />
+        :rules="[val => validaLingua()]">
+        <template v-slot:hint>
+          Codice ISO 639-2 a 3 cifre
+        </template>
+      </q-input>
       
       <q-input
         filled
@@ -38,14 +42,14 @@
         <q-btn label="Salva" type="submit" color="secondary"></q-btn>
         <q-btn v-if="isEditing" label="Undo" @click="btnUndo()" color="secondary" flat class="q-ml-sm" ></q-btn>
         <q-space />
-        <q-btn v-if="isEditing" label="Elimina" @click.prevent="deleteConfirm = true" color="negative"></q-btn>
+        <q-btn v-if="enableDelete" label="Elimina" @click.prevent="deleteConfirm = true" color="negative"></q-btn>
       </div>
     </q-form>
     </q-card-section>
     <q-dialog v-model="deleteConfirm" persistent>
       <q-card>
         <q-card-section>
-          <span class="q-ml-sm">Confermi eliminazione della lingua {{frmSigla}} ?</span>
+          <span class="q-ml-sm">Confermi eliminazione della lingua {{frmLingua}} ?</span>
         </q-card-section>
 
         <q-card-actions align="right">
@@ -70,6 +74,7 @@ export default {
     return {
       title: "",
       isEditing: false,
+      enableDelete: false,
       frmID: null,
       frmLingua: null,
       frmNomeITA: null,

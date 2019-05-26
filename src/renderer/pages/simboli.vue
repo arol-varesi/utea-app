@@ -57,6 +57,7 @@
             </q-tr>
         </template>
     </q-table>
+    <p> {{debugSelectedSimbolo}} </p>
     
     <!-- Form inserimento tramite l'uso del componente 'formSimbolo' -->
     <q-dialog v-model="editForm" 
@@ -82,19 +83,12 @@ import formSimbolo from '../components/formSimbolo.vue'
 //const { createConnection, getRepository, getConnection, getConnectionOptions} = require('typeorm')
 // const { Simbolo } = require('../../../models/specifiche_db/entity/Simbolo');
 // const { DescSimbolo } = require('../../../models/specifiche_db/entity/DescSimbolo');
-const { TradSimbolo } = require('../../../models/specifiche_db/entity/TradSimbolo')
-const { Lingua } = require('../../../models/specifiche_db/entity/Lingua')
-const databasePath = "database.sqlite"
+//const { TradSimbolo } = require('../../../models/specifiche_db/entity/TradSimbolo')
+//const { Lingua } = require('../../../models/specifiche_db/entity/Lingua')
+//const databasePath = "database.sqlite"
 
 const { Simbolo, DescSimbolo, connectDB } = require('../js/dbSpecifiche')
-// const { dbSpecifiche, Simbolo, DescSimbolo, TradSimbolo, Lingua, connectDB } = require('../js/dbSpecifiche')
 
-// var connection = null
-
-// async function loadSimboli() {
-//   let simboli = await getConnection("default").getRepository("Simbolo").find();
-//   return simboli
-// }
 
 export default {
   data () {
@@ -105,6 +99,7 @@ export default {
       filter: '',
       editForm: false,
       selectedSimbolo: null,
+      debugSelectedSimbolo: null, //DEBUG
       columns: [
         { name: 'sigla', label: 'Sigla', field: row => row.sigla, align: 'left', sortable: true , style: "width: 60px"},
         { name: 'descrizione', label: 'Descrizione', field: row => row.descrizione.testo, align: 'left', sortable: false},
@@ -118,8 +113,10 @@ export default {
     formSimbolo,
   },
   methods: {
-    editSimbolo: function(props) {
+    editSimbolo: async function(props) {
       this.selectedSimbolo = props.rows[0].id
+      this.debugSelectedSimbolo = await Simbolo.findOne({id: this.selectedSimbolo})// DEBUG
+
       this.editForm = true
     },
     newSimbolo: async function (event) {
@@ -137,9 +134,10 @@ export default {
     },
   },
   created: async function () {
-    connectDB().then(() => {
+      await connectDB()
+    //connectDB().then(() => {
       this.updateTable()
-    })
+    //})
   } 
 }
 

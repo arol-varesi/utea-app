@@ -9,6 +9,7 @@
     </q-card-section>
 
     <q-separator />
+
     <q-card-section>
 
     <q-form
@@ -16,16 +17,20 @@
       class="q-gutter-md">
 
       <input v-model="frmID" style="display: none" id="frmId">
-      <q-input
-        filled
+      <q-input filled
         v-model="frmSigla"
         label="Sigla"
         :rules="[val => validaSigla()]" />
       
-      <q-input
-        filled
+      <q-input filled class="q-my-sm"
         v-model="frmDescrizione"
         label="Descrizione" />
+
+      <q-input filled dense class="q-my-xs"
+        v-for="tr in frmTraduzione" :key="tr.idLingua" 
+        v-model="tr.traduzione"
+        :label="tr.lingua"
+        ></q-input>
 
       <div class="row">
         <q-btn label="Salva" type="submit" color="secondary"></q-btn>
@@ -51,8 +56,8 @@
 </template>
 
 <script>
-const { Simbolo } = require('../../../models/specifiche_db/entity/Simbolo') 
-const { DescSimbolo } = require('../../../models/specifiche_db/entity/DescSimbolo');
+const { Simbolo, DescSimbolo, TradSimbolo, Lingua } = require('../js/dbSpecifiche') 
+//const { DescSimbolo } = require('../../../models/specifiche_db/entity/DescSimbolo');
 
 
 export default {
@@ -63,11 +68,13 @@ export default {
   ],   
   data () {
     return {
+      lingue: [],
       title: "",
       isEditing: false,
       frmID: null,
       frmSigla: null,
       frmDescrizione: null,
+      frmTraduzione: [],
       deleteConfirm: false
     }
   },
@@ -78,6 +85,7 @@ export default {
 //  },
 
   created: async function () {
+    this.lingue = await Lingua.find() 
     this.loadForm()
   },
   methods: {
@@ -90,6 +98,14 @@ export default {
       simb.descrizione = desc
       simb.sigla = this.frmSigla
       await simb.save()
+      // salva tutte le traduzioni 
+      this.frmTraduzione.forEach(async tr => {
+        let trad = (tr.idTrad === null) ? new TradSimbolo : desc.traduzioni.find(item => item.id === tr.idTrad) 
+        trad.descrizione = desc
+        trad.lingua = await Lingua.findOne({id: tr.idLingua})
+        trad.traduzione = tr.traduzione
+        await trad.save()
+      })
       this.$q.notify("Salvato Simbolo: " + simb.id + " - " + simb.sigla)
       this.$emit("save")
     },
@@ -98,6 +114,9 @@ export default {
         let simb = await Simbolo.findOne({id: this.frmID})
         let desc = simb.descrizione
         let sigla = simb.sigla
+        desc.traduzioni.forEach(async tr => {
+          await tr.remove()
+        })
         await simb.remove()
         await desc.remove()
         this.$q.notify("Eliminato simbolo: " + sigla + " !!")
@@ -128,12 +147,28 @@ export default {
         this.frmID = simb.id
         this.frmSigla = simb.sigla
         this.frmDescrizione = simb.descrizione.testo
+        this.frmTraduzione = []
+        this.lingue.forEach((l) => {
+          // controlla l'esistenza della Descrizione tradotta in lingua "l"
+          let trad = simb.descrizione.traduzioni.find(item => item.lingua.id === l.id)
+          if (trad) {
+            // traduzione già esistente
+            this.frmTraduzione.push({idTrad: trad.id, idLingua: trad.lingua.id , traduzione: trad.traduzione, lingua: trad.lingua.nomeIta})
+          } else {
+            // traduzione non esistente
+            this.frmTraduzione.push({idTrad: null, idLingua: l.id,  traduzione: "", lingua: l.nomeIta})
+          }
+        })
         this.isEditing = true
       } else {
         this.title = "Aggiunta Simbolo"
         this.frmID = null
-        this.frmSigla = null,
+        this.frmSigla = null
         this.frmDescrizione = null
+        this.frmTraduzione = []
+        this.lingue.forEach((l) => {
+          this.frmTraduzione.push({idTrad: null, idLingua: l.id,  traduzione: "", lingua: l.nomeIta})
+        })
         this.isEditing = false
       }
     },

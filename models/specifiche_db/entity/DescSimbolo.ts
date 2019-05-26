@@ -9,7 +9,7 @@ export class DescSimbolo extends BaseEntity {
   @Column()
   testo : string;
 
-  @OneToMany( type => TradSimbolo ,traduzione => traduzione.descrizione)
+  @OneToMany( type => TradSimbolo ,traduzione => traduzione.descrizione, { eager: true })
     traduzioni: TradSimbolo[];
 
 }

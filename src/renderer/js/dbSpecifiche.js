@@ -24,7 +24,7 @@ const connectionOption = {
 
 // const __appPath = app.getPath("desktop");
 // const __appPath = app.getAppPath();
-const __appPath = path.normalize(path.join(__dirname,"../../../"))
+// const __appPath = path.normalize(path.join(__dirname,"../../../"))
 
 
 var dbSpecifiche = {
@@ -60,6 +60,7 @@ async function connectDB() {
 
   return dbConnection
 }
+
 
 async function _getData(table, filter={}) {
   let connection = await connectDB()
