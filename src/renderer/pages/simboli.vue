@@ -4,6 +4,7 @@
       title="Simboli"
       :data="simboli"
       :columns="columns"
+      :visible-columns="visibleColumns"
       :filter="filter"
       row-key="id"
       selection= "single"
@@ -27,11 +28,20 @@
             <q-icon name="search" />
           </template>
         </q-input>
+        <q-select 
+          v-model="visibleColumns"
+          borderless options-dense
+          emit-value
+          map-options
+          display-value="Lingue"
+          :options="lingue"
+          :option-value="(item) => item.sigla"
+          :option-label="(item) => item.nomeIta"
+          ></q-select>
         <q-space />
         <q-btn _flat dense _color="primary" class="q-ml-md" 
           _icon="far fa-plus-square" 
           label="Aggiungi Simbolo" no-caps
-
           :disable="loading" 
           @click="newSimbolo()" 
           ></q-btn>
@@ -53,12 +63,12 @@
                 </q-td>
                 <q-td key="sigla" :props="props" >{{ props.row.sigla }}</q-td>
                 <q-td key="descrizione" :props="props">{{ props.row.descrizione.testo }}</q-td>
+                <q-td v-for="l in lingue" :key="l.sigla" :props="props"> {{ props.row.descrizione.traduzioni.find(item => item.lingua.id === l.id).traduzione }}</q-td>
               </template>
             </q-tr>
         </template>
     </q-table>
-    <p> {{debugSelectedSimbolo}} </p>
-    
+   
     <!-- Form inserimento tramite l'uso del componente 'formSimbolo' -->
     <q-dialog v-model="editForm" 
       transition-show = "slide-down" 
@@ -87,22 +97,24 @@ import formSimbolo from '../components/formSimbolo.vue'
 //const { Lingua } = require('../../../models/specifiche_db/entity/Lingua')
 //const databasePath = "database.sqlite"
 
-const { Simbolo, DescSimbolo, connectDB } = require('../js/dbSpecifiche')
+const { Simbolo, DescSimbolo, Lingua, TradSimbolo, connectDB } = require('../js/dbSpecifiche')
 
 
 export default {
   data () {
     return {
+      lingue: [],
+      traduzioni: [],
       simboli: [],
       selected: [],
       loading: true,
       filter: '',
       editForm: false,
       selectedSimbolo: null,
-      debugSelectedSimbolo: null, //DEBUG
+      visibleColumns: [],
       columns: [
-        { name: 'sigla', label: 'Sigla', field: row => row.sigla, align: 'left', sortable: true , style: "width: 60px"},
-        { name: 'descrizione', label: 'Descrizione', field: row => row.descrizione.testo, align: 'left', sortable: false},
+        { name: 'sigla', label: 'Sigla',required: true, field: row => row.sigla, align: 'left', sortable: true , style: "width: 60px"},
+        { name: 'descrizione', label: 'Descrizione',required: true, field: row => row.descrizione.testo, align: 'left', sortable: false},
       ],
       myPagination: {
         rowsPerPage: 20
@@ -115,8 +127,6 @@ export default {
   methods: {
     editSimbolo: async function(props) {
       this.selectedSimbolo = props.rows[0].id
-      this.debugSelectedSimbolo = await Simbolo.findOne({id: this.selectedSimbolo})// DEBUG
-
       this.editForm = true
     },
     newSimbolo: async function (event) {
@@ -135,6 +145,12 @@ export default {
   },
   created: async function () {
       await connectDB()
+      this.lingue = await Lingua.find()
+      this.traduzioni = await TradSimbolo.find()
+      this.lingue.forEach((l) => {
+        let col = {name: l.sigla, label: l.nomeIta}
+        this.columns.push(col)
+      })
     //connectDB().then(() => {
       this.updateTable()
     //})
