@@ -30,13 +30,11 @@
         </q-input>
         <q-select 
           v-model="visibleColumns"
-          borderless options-dense
+          multiple borderless options-dense
           emit-value
           map-options
           display-value="Lingue"
-          :options="lingue"
-          :option-value="(item) => item.sigla"
-          :option-label="(item) => item.nomeIta"
+          :options="selectOptions"
           ></q-select>
         <q-space />
         <q-btn _flat dense _color="primary" class="q-ml-md" 
@@ -63,7 +61,8 @@
                 </q-td>
                 <q-td key="sigla" :props="props" >{{ props.row.sigla }}</q-td>
                 <q-td key="descrizione" :props="props">{{ props.row.descrizione.testo }}</q-td>
-                <q-td v-for="l in lingue" :key="l.sigla" :props="props"> {{ props.row.descrizione.traduzioni.find(item => item.lingua.id === l.id).traduzione }}</q-td>
+                <!-- <q-td v-for="l in lingue" :key="l.sigla" :props="props"> {{ props.row.descrizione.traduzioni.find(item => item.lingua.id === l.id).traduzione }}</q-td> -->
+                <q-td v-for="l in lingue" :key="l.sigla" :props="props"> {{ props.row[l.sigla] }}</q-td>
               </template>
             </q-tr>
         </template>
@@ -79,8 +78,8 @@
       <form-simbolo
           v-if="editForm"
           :simboloID = "selectedSimbolo" 
-          @save = "editForm = false; updateTable()"
-          @delete = "editForm = false; updateTable()">
+          @save = "updateTable()"
+          @delete = "updateTable()">
       </form-simbolo>  
     </q-dialog>
   </div>
@@ -103,8 +102,9 @@ const { Simbolo, DescSimbolo, Lingua, TradSimbolo, connectDB } = require('../js/
 export default {
   data () {
     return {
+      selectOptions: [],
       lingue: [],
-      traduzioni: [],
+      traduzioni : [],
       simboli: [],
       selected: [],
       loading: true,
@@ -137,10 +137,21 @@ export default {
       this.editForm = false
     },
     updateTable: async function () {
+      this.editForm = false
       this.loading = true
       this.simboli = await Simbolo.find()
+      this.traduzioni = await TradSimbolo.find()
+      this.simboli.forEach (simb => {
+        simb.descrizione.traduzioni.forEach(trad => {
+
+          simb[trad.lingua.sigla] = trad.traduzione
+        })
+      })
       // this.simboli = await dbSpecifiche.simboli
       this.loading = false
+      this.$forceUpdate()
+      this.$q.notify({position: "top-right", message: "DEBUG: Force UPDATE"})
+
     },
   },
   created: async function () {
@@ -150,6 +161,8 @@ export default {
       this.lingue.forEach((l) => {
         let col = {name: l.sigla, label: l.nomeIta}
         this.columns.push(col)
+        let opt = {value: l.sigla, label: l.nomeIta}
+        this.selectOptions.push(opt)
       })
     //connectDB().then(() => {
       this.updateTable()
