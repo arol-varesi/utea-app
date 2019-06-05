@@ -89,22 +89,19 @@
 <script>
 import formSimbolo from '../components/formSimbolo.vue'
 
-//const { createConnection, getRepository, getConnection, getConnectionOptions} = require('typeorm')
-// const { Simbolo } = require('../../../models/specifiche_db/entity/Simbolo');
-// const { DescSimbolo } = require('../../../models/specifiche_db/entity/DescSimbolo');
-//const { TradSimbolo } = require('../../../models/specifiche_db/entity/TradSimbolo')
-//const { Lingua } = require('../../../models/specifiche_db/entity/Lingua')
-//const databasePath = "database.sqlite"
-
 const { Simbolo, DescSimbolo, Lingua, TradSimbolo, connectDB } = require('../js/dbSpecifiche')
+//const { getRepository } = require('typeorm')
 
+
+// let simboloRep
 
 export default {
+  name : "pageSimboli",
   data () {
     return {
       selectOptions: [],
       lingue: [],
-      traduzioni : [],
+      //traduzioni : [],
       simboli: [],
       selected: [],
       loading: true,
@@ -130,37 +127,44 @@ export default {
       this.editForm = true
     },
     newSimbolo: async function (event) {
-      this.selectedSimbolo = -1
+      this.selectedSimbolo = null // con selectedSimbolo = null -> Nuovo Simbolo
       this.editForm = true
     },
     btnCancel: function (event) {
       this.editForm = false
     },
     updateTable: async function () {
-      this.editForm = false
       this.loading = true
+      // carica i simboli
       this.simboli = await Simbolo.find()
-      this.traduzioni = await TradSimbolo.find()
-      this.simboli.forEach (simb => {
-        simb.descrizione.traduzioni.forEach(trad => {
-
-          simb[trad.lingua.sigla] = trad.traduzione
+      //this.simboli = await simboloRep.find()
+      //this.traduzioni = await TradSimbolo.find()
+      // in ogni simbolo vengono aggiunte le traduzioni nelle lingue presenti
+      this.simboli.forEach (async simb => {
+        let trads = await TradSimbolo.find({descrizione: simb.descrizione.id})
+        trads.forEach(trad => {
+          this.$set(simb, trad.lingua.sigla, trad.traduzione)
+          // simb[trad.lingua.sigla] = trad.traduzione
         })
       })
       // this.simboli = await dbSpecifiche.simboli
       this.loading = false
-      this.$forceUpdate()
-      this.$q.notify({position: "top-right", message: "DEBUG: Force UPDATE"})
+      // chiude l'eventuale form attivo
+      this.editForm = false
+      // this.$q.notify({position: "top-right", message: "DEBUG: Force UPDATE"})
 
     },
   },
   created: async function () {
-      await connectDB()
+      let connect = await connectDB()
+      // simboloRep = connect.getRepository(Simbolo)
       this.lingue = await Lingua.find()
-      this.traduzioni = await TradSimbolo.find()
+      // this.traduzioni = await TradSimbolo.find()
       this.lingue.forEach((l) => {
+        // Aggiungi le lingue nelle colonne della tabella
         let col = {name: l.sigla, label: l.nomeIta}
         this.columns.push(col)
+        // Aggiungi le lingue nelle opzioni di vilualizzazione delle colonne
         let opt = {value: l.sigla, label: l.nomeIta}
         this.selectOptions.push(opt)
       })

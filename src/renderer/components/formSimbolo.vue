@@ -57,24 +57,21 @@
 
 <script>
 const { Simbolo, DescSimbolo, TradSimbolo, Lingua } = require('../js/dbSpecifiche') 
-//const { DescSimbolo } = require('../../../models/specifiche_db/entity/DescSimbolo');
-
 
 export default {
-
   name: 'formSimbolo',
   props: [
     'simboloID',
   ],   
   data () {
     return {
-      lingue: [],
+      lingue: [], // records della table Lingue
       title: "",
       isEditing: false,
       frmID: null,
       frmSigla: null,
       frmDescrizione: null,
-      frmTraduzione: [],
+      frmTraduzione: [], // {idTrad, idLingua , traduzione, lingua}
       deleteConfirm: false
     }
   },
@@ -95,14 +92,14 @@ export default {
       let desc = (this.frmID === null) ? new DescSimbolo : simb.descrizione
       desc.testo = this.frmDescrizione
       await desc.save()
-      simb.descrizione = desc
+      simb.descrizione = desc.id
       simb.sigla = this.frmSigla
       await simb.save()
       // salva tutte le traduzioni 
       this.frmTraduzione.forEach(async tr => {
-        let trad = (tr.idTrad === null) ? new TradSimbolo : desc.traduzioni.find(item => item.id === tr.idTrad) 
-        trad.descrizione = desc
-        trad.lingua = await Lingua.findOne({id: tr.idLingua})
+        let trad = (tr.idTrad === null) ? new TradSimbolo : await TradSimbolo.findOne({id: tr.idTrad}) 
+        trad.descrizione = desc.id
+        trad.lingua = tr.idLingua
         trad.traduzione = tr.traduzione
         await trad.save()
       })
@@ -140,27 +137,33 @@ export default {
         return 'Campo obbligatorio!'
       }
     } ,
+    // 
     loadForm: async function () {
-      if (this.simboloID !== -1) { // Nuovo Simbolo
+      if (this.simboloID !== null) { // Simbolo esistente
         let simb = await Simbolo.findOne({id: this.simboloID})
         this.title = "Modifica Simbolo"
         this.frmID = simb.id
         this.frmSigla = simb.sigla
         this.frmDescrizione = simb.descrizione.testo
-        this.frmTraduzione = []
-        this.lingue.forEach((l) => {
+        this.frmTraduzione = [] // azzera le traduzione se presenti
+        this.lingue.forEach(async (l) => {
+          let trad = await TradSimbolo.findOne({ descrizione: simb.descrizione.id, lingua: l.id })
           // controlla l'esistenza della Descrizione tradotta in lingua "l"
-          let trad = simb.descrizione.traduzioni.find(item => item.lingua.id === l.id)
+          //let trad = simb.descrizione.traduzioni.find(item => item.lingua.id === l.id)
           if (trad) {
             // traduzione già esistente
             this.frmTraduzione.push({idTrad: trad.id, idLingua: trad.lingua.id , traduzione: trad.traduzione, lingua: trad.lingua.nomeIta})
           } else {
-            // traduzione non esistente
+            // traduzione non esistente quindi verrà creata nuova in salvataggio (idTrad: null)
+            //let newtrad = new TradSimbolo
+            //newtrad.descrizione = simb.descrizione
+            //newtrad.lingua = l
+            //await newtrad.save()
             this.frmTraduzione.push({idTrad: null, idLingua: l.id,  traduzione: "", lingua: l.nomeIta})
           }
         })
         this.isEditing = true
-      } else {
+      } else { // Nuovo simbolo
         this.title = "Aggiunta Simbolo"
         this.frmID = null
         this.frmSigla = null
