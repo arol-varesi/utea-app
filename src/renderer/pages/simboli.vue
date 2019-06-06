@@ -28,24 +28,31 @@
             <q-icon name="search" />
           </template>
         </q-input>
-        <q-select 
+        <q-select class="q-ml-md" outlined
           v-model="visibleColumns"
-          multiple borderless options-dense
+          multiple flat dense _borderless options-dense
           emit-value
           map-options
           display-value="Lingue"
           :options="selectOptions"
           ></q-select>
         <q-space />
-        <q-btn _flat dense _color="primary" class="q-ml-md" 
-          _icon="far fa-plus-square" 
-          label="Aggiungi Simbolo" no-caps
+        <q-btn flat round dense class="q-ml-md"
+          icon="fas fa-file-download"
+          @click="saveCsv">
+          <q-tooltip>Esporta CSV</q-tooltip>
+        </q-btn>
+        <q-btn flat round dense class="q-ml-md" 
+          icon="add_circle_outline"
           :disable="loading" 
-          @click="newSimbolo()" 
-          ></q-btn>
+          @click="newSimbolo()" >
+          <q-tooltip>Aggiungi Simbolo</q-tooltip>
+        </q-btn>
         <q-btn flat round dense class="q-ml-md"
           :icon="props.inFullscreen ? 'fullscreen_exit' : 'fullscreen'"
-          @click="props.toggleFullscreen"></q-btn>
+          @click="props.toggleFullscreen">
+          <q-tooltip>{{props.inFullscreen ? 'Schermo Normale' : 'Fullscreen'}}</q-tooltip>
+        </q-btn>
         </template>
 
         <!-- Personalizzazione dello slot 'body' per personalizzare la gestione
@@ -90,10 +97,8 @@
 import formSimbolo from '../components/formSimbolo.vue'
 
 const { Simbolo, DescSimbolo, Lingua, TradSimbolo, connectDB } = require('../js/dbSpecifiche')
-//const { getRepository } = require('typeorm')
 
-
-// let simboloRep
+const createCsvWriter = require('csv-writer').createObjectCsvWriter
 
 export default {
   name : "pageSimboli",
@@ -146,6 +151,7 @@ export default {
           this.$set(simb, trad.lingua.sigla, trad.traduzione)
           // simb[trad.lingua.sigla] = trad.traduzione
         })
+        this.$set(simb, "ITA", simb.descrizione.testo)
       })
       // this.simboli = await dbSpecifiche.simboli
       this.loading = false
@@ -153,6 +159,25 @@ export default {
       this.editForm = false
       // this.$q.notify({position: "top-right", message: "DEBUG: Force UPDATE"})
 
+    },
+    saveCsv: function () {
+      let heads = [ 
+        {id: 'sigla', title: 'Sigla'},
+        {id: 'ITA', title: 'ITA'}
+      ]
+      this.lingue.forEach(l => {
+        let h = {id: l.sigla, title: l.sigla}
+        heads.push(h)
+      })
+      const csvWriter = createCsvWriter({
+        path: 'simboli.csv',
+        header: heads,
+        fieldDelimiter: ';',
+      })
+      csvWriter.writeRecords(this.simboli)
+        .then(() => {
+            this.$q.notify({position: "top-right", message: "CSV Esportato"})
+        })
     },
   },
   created: async function () {
