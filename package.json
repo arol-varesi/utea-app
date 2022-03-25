@@ -9,7 +9,7 @@
   "author": "arol-varesi",
   "license": "MIT",
   "devDependencies": {
-    "electron": "^4.0.5",
+    "electron": "^13.6.6",
     "electron-reload": "^1.4.0",
     "eslint": "^5.14.1"
   }
